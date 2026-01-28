@@ -1,0 +1,460 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: Anthropic Files API
+  description: >
+    The Files API allows you to upload and manage files to use with the
+    Anthropic API 
+
+    without having to re-upload content with each request. Upload documents,
+    images, 
+
+    and other supported file types for use in message creation and batch
+    processing.
+  tags:
+    - Files
+  links:
+    - icon: code
+      url: https://github.com/naftiko/anthropic-sandbox
+spec:
+  type: openapi
+  lifecycle: experimental
+  owner: kinlane@naftiko.io
+  definition: |
+    openapi: 3.1.0
+    info:
+      title: anthropic-files-api
+      description: >
+        The Files API allows you to upload and manage files to use with the
+        Anthropic API 
+
+        without having to re-upload content with each request. Upload documents,
+        images, 
+
+        and other supported file types for use in message creation and batch
+        processing.
+      version: 1.0.0
+      contact:
+        name: Anthropic
+        url: https://www.anthropic.com
+        email: support@anthropic.com
+      license:
+        name: Anthropic API License
+        url: https://www.anthropic.com/terms
+    servers:
+      - url: https://api.anthropic.com/v1
+        description: Production Server
+    security:
+      - ApiKeyAuth: []
+    tags:
+      - name: Files
+        description: Upload, retrieve, and manage files
+    paths:
+      /files:
+        get:
+          summary: List Files
+          description: >-
+            Retrieves a paginated list of all files that have been uploaded to your
+            organization.
+          operationId: listFiles
+          tags:
+            - Files
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/AnthropicBeta'
+            - $ref: '#/components/parameters/Limit'
+            - $ref: '#/components/parameters/BeforeId'
+            - $ref: '#/components/parameters/AfterId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/FileList'
+                  examples:
+                    FileListExample:
+                      $ref: '#/components/examples/FileListExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "FileListExample"
+              }
+        post:
+          summary: Create File
+          description: Uploads a file to Anthropic's servers for use in subsequent API calls.
+          operationId: createFile
+          tags:
+            - Files
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/AnthropicBeta'
+          requestBody:
+            required: true
+            content:
+              multipart/form-data:
+                schema:
+                  $ref: '#/components/schemas/CreateFileRequest'
+                encoding:
+                  file:
+                    contentType: >-
+                      application/pdf, image/jpeg, image/png, image/gif, image/webp,
+                      text/plain, text/csv, application/json,
+                      application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                      application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/File'
+                  examples:
+                    FileExample:
+                      $ref: '#/components/examples/FileExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "FileExample"
+              }
+      /files/{file_id}:
+        get:
+          summary: Get File Metadata
+          description: Retrieves metadata information for a previously uploaded file.
+          operationId: getFileMetadata
+          tags:
+            - Files
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/AnthropicBeta'
+            - $ref: '#/components/parameters/FileId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/File'
+                  examples:
+                    FileExample:
+                      $ref: '#/components/examples/FileExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "FileExample"
+              }
+        delete:
+          summary: Delete File
+          description: Permanently deletes a file from Anthropic's storage system.
+          operationId: deleteFile
+          tags:
+            - Files
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/AnthropicBeta'
+            - $ref: '#/components/parameters/FileId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/FileDeletedResponse'
+                  examples:
+                    FileDeletedResponseExample:
+                      $ref: '#/components/examples/FileDeletedResponseExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "FileDeletedResponseExample"
+              }
+      /files/{file_id}/content:
+        get:
+          summary: Download File Content
+          description: Downloads the actual content of a previously uploaded file.
+          operationId: downloadFileContent
+          tags:
+            - Files
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/AnthropicBeta'
+            - $ref: '#/components/parameters/FileId'
+          responses:
+            '200':
+              description: Successful Response - Returns the file content as binary data
+              content:
+                application/octet-stream:
+                  schema:
+                    $ref: '#/components/schemas/FileContent'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "FileContentExample"
+              }
+    components:
+      securitySchemes:
+        ApiKeyAuth:
+          type: apiKey
+          in: header
+          name: x-api-key
+          description: >
+            Your unique API key for authentication. This key is required in the
+            header 
+
+            of all API requests to authenticate your account and access Anthropic's
+            services.
+      parameters:
+        AnthropicVersion:
+          name: anthropic-version
+          in: header
+          required: true
+          description: The version of the Anthropic API to use
+          schema:
+            type: string
+            example: '2023-06-01'
+        AnthropicBeta:
+          name: anthropic-beta
+          in: header
+          required: true
+          description: Beta version header required for the Files API
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - files-api-2025-04-14
+          style: form
+          explode: false
+          example:
+            - files-api-2025-04-14
+        Limit:
+          name: limit
+          in: query
+          required: false
+          description: >-
+            Number of items to return per page. Defaults to 20. Ranges from 1 to
+            1000.
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 1000
+        BeforeId:
+          name: before_id
+          in: query
+          required: false
+          description: >-
+            ID of the object to use as a cursor for pagination. Returns results
+            immediately before this object.
+          schema:
+            type: string
+        AfterId:
+          name: after_id
+          in: query
+          required: false
+          description: >-
+            ID of the object to use as a cursor for pagination. Returns results
+            immediately after this object.
+          schema:
+            type: string
+        FileId:
+          name: file_id
+          in: path
+          required: true
+          description: Unique identifier for the file
+          schema:
+            type: string
+          example: file_011CNha8iCJcU1wXNR6q4V8w
+      responses:
+        ErrorResponse:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ErrorExample:
+                  $ref: '#/components/examples/ErrorExample'
+      schemas:
+        File:
+          type: object
+          required:
+            - id
+            - type
+            - filename
+            - mime_type
+            - size_bytes
+            - created_at
+            - downloadable
+          properties:
+            id:
+              type: string
+              description: >-
+                Unique object identifier. The format and length of IDs may change
+                over time.
+            type:
+              type: string
+              enum:
+                - file
+              description: Object type. For files, this is always "file".
+            filename:
+              type: string
+              minLength: 1
+              maxLength: 500
+              description: Original filename of the uploaded file
+            mime_type:
+              type: string
+              minLength: 1
+              maxLength: 255
+              description: MIME type of the file
+            size_bytes:
+              type: integer
+              minimum: 0
+              description: Size of the file in bytes
+            created_at:
+              type: string
+              format: date-time
+              description: RFC 3339 datetime string representing when the file was created
+            downloadable:
+              type: boolean
+              default: false
+              description: Whether the file can be downloaded
+        FileList:
+          type: object
+          required:
+            - data
+            - first_id
+            - has_more
+            - last_id
+          properties:
+            data:
+              type: array
+              description: List of file metadata objects
+              items:
+                $ref: '#/components/schemas/File'
+            first_id:
+              type: string
+              nullable: true
+              description: ID of the first file in this page of results
+            has_more:
+              type: boolean
+              default: false
+              description: Whether there are more results available
+            last_id:
+              type: string
+              nullable: true
+              description: ID of the last file in this page of results
+        CreateFileRequest:
+          type: object
+          required:
+            - file
+          properties:
+            file:
+              type: string
+              format: binary
+              description: The file to upload
+        FileDeletedResponse:
+          type: object
+          required:
+            - id
+            - type
+          properties:
+            id:
+              type: string
+              description: ID of the deleted file
+            type:
+              type: string
+              enum:
+                - file_deleted
+              default: file_deleted
+              description: >-
+                Deleted object type. For file deletion, this is always
+                "file_deleted".
+        FileContent:
+          type: string
+          format: binary
+          description: The raw file content as binary data
+        Error:
+          type: object
+          required:
+            - type
+            - message
+          properties:
+            type:
+              type: string
+              description: The type of error
+            message:
+              type: string
+              description: A human-readable error message
+      examples:
+        FileExample:
+          summary: File Metadata Response
+          value:
+            id: file_011CNha8iCJcU1wXNR6q4V8w
+            type: file
+            filename: quarterly-report.pdf
+            mime_type: application/pdf
+            size_bytes: 2048576
+            created_at: '2024-11-07T05:31:56Z'
+            downloadable: true
+        FileListExample:
+          summary: File List Response
+          value:
+            data:
+              - id: file_011CNha8iCJcU1wXNR6q4V8w
+                type: file
+                filename: quarterly-report.pdf
+                mime_type: application/pdf
+                size_bytes: 2048576
+                created_at: '2024-11-07T05:31:56Z'
+                downloadable: true
+              - id: file_022DOib9jDKdV2yYOS7r5W9x
+                type: file
+                filename: product-image.png
+                mime_type: image/png
+                size_bytes: 524288
+                created_at: '2024-11-06T14:22:30Z'
+                downloadable: true
+              - id: file_033EPjc0kELeW3zZPT8s6X0y
+                type: file
+                filename: data-export.csv
+                mime_type: text/csv
+                size_bytes: 102400
+                created_at: '2024-11-05T09:15:00Z'
+                downloadable: true
+            first_id: file_011CNha8iCJcU1wXNR6q4V8w
+            has_more: true
+            last_id: file_033EPjc0kELeW3zZPT8s6X0y
+        FileDeletedResponseExample:
+          summary: File Deleted Response
+          value:
+            id: file_011CNha8iCJcU1wXNR6q4V8w
+            type: file_deleted
+        FileContentExample:
+          summary: File Content Response
+          description: Binary file content is returned
+        ErrorExample:
+          summary: Error Response
+          value:
+            type: not_found_error
+            message: The requested file could not be found.

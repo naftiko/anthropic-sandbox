@@ -1,0 +1,267 @@
+naftiko:
+  schema: >-
+    https://github.com/naftiko/schema/blob/main/core/capability/capabiity-schema.yml
+info:
+  name: Anthropic API & MCP Sandbox
+  description: >-
+    This is a Anthropic sandbox that uses OpenAPI, Microcks, Bruno, and
+    Backstage to provide a 3rd-party REST API and MCP sandbox for Anthropic.
+  tags:
+    - Artificial Intelligence
+    - AI
+    - Models
+ports:
+  source:
+    - aid: anthropic-sandbox
+      title: Anthropic Admin API
+      description: >-
+        Manage administrative functions for Anthropic organizations, workspaces,
+        users, invites, and API keys.
+      openApi:
+        - $ref: openapi/anthropic-admin-api-openapi.yml
+    - aid: anthropic-sandbox
+      title: Anthropic Files API
+      description: >-
+        The Files API allows you to upload and manage files to use with the
+        Anthropic API without having to re-upload content with each request.
+        Upload documents, images, and other supported file types for use in
+        message creation and batch processing.
+      openApi:
+        - $ref: openapi/anthropic-files-api-openapi.yml
+    - aid: anthropic-sandbox
+      title: Anthropic Message Batches API
+      description: >-
+        Send a batch of Message creation requests. The Message Batches API can
+        be used to process multiple Messages API requests at once. Once a
+        Message Batch is created, it begins processing immediately. Batches can
+        take up to 24 hours to complete.
+      openApi:
+        - $ref: openapi/anthropic-message-batches-api-openapi.yml
+    - aid: anthropic-sandbox
+      title: Anthropic Prompt Tools API
+      description: >-
+        Manage prompts with generation, improvement, and templatization
+        capabilities.The prompt tools APIs are in a closed research preview.
+        These APIs are a setof tools to generate and improve prompts, similar to
+        what's available in theAnthropic Workbench, and are intended for use by
+        other prompt engineeringplatforms and playgrounds.
+      openApi:
+        - $ref: openapi/anthropic-messages-api-openapi.yml
+    - aid: anthropic-sandbox
+      title: Anthropic Models API
+      description: >-
+        Send a structured list of input messages with text and/or image content,
+        andthe model will generate the next message in the conversation.This API
+        provides access to list available models, get model details,create
+        messages, and count tokens.
+      openApi:
+        - $ref: openapi/anthropic-models-api-openapi.yml
+    - aid: anthropic-sandbox
+      title: Anthropic Prompt Tools API
+      description: >-
+        Manage prompts with generation, improvement, and templatization
+        capabilities.The prompt tools APIs are in a closed research preview.
+        These APIs are a setof tools to generate and improve prompts, similar to
+        what's available in theAnthropic Workbench, and are intended for use by
+        other prompt engineeringplatforms and playgrounds.
+      openApi:
+        - $ref: openapi/anthropic-prompts-api-openapi.yml
+virtualization:
+  sandboxes:
+    - name: Anthropic Admin API REST Sandbox
+      type: http://localhost:8080/rest/anthropic-admin-api/1.0.0
+    - name: Anthropic Admin MCP Sandbox
+      type: http://localhost:8080/rest/anthropic-admin-api/1.0.0/sse
+    - name: Anthropic Files API REST Sandbox
+      type: http://localhost:8080/rest/anthropic-files-api/1.0.0
+    - name: Anthropic Files MCP Sandbox
+      type: http://localhost:8080/rest/anthropic-files-api/1.0.0/sse
+    - name: Anthropic Message Batches API REST Sandbox
+      type: http://localhost:8080/rest/anthropic-message-batches-api/1.0.0
+    - name: Anthropic Message Batches MCP Sandbox
+      type: http://localhost:8080/rest/anthropic-message-batches-api/1.0.0/sse
+    - name: Anthropic Prompt Tools API REST Sandbox
+      type: http://localhost:8080/rest/anthropic-prompt-tools-api/1.0.0
+    - name: Anthropic Prompt Tools MCP Sandbox
+      type: http://localhost:8080/rest/anthropic-prompt-tools-api/1.0.0/sse
+    - name: Anthropic Models API REST Sandbox
+      type: http://localhost:8080/rest/anthropic-models-api/1.0.0
+    - name: Anthropic Models MCP Sandbox
+      type: http://localhost:8080/rest/anthropic-models-api/1.0.0/sse
+    - name: Anthropic Prompt Tools API REST Sandbox
+      type: http://localhost:8080/rest/anthropic-prompt-tools-api/1.0.0
+    - name: Anthropic Prompt Tools MCP Sandbox
+      type: http://localhost:8080/rest/anthropic-prompt-tools-api/1.0.0/sse
+distribution:
+  backstage:
+    - title: Anthropic Admin API
+      description: >-
+        Manage administrative functions for Anthropic organizations, workspaces,
+        users, invites, and API keys.
+      entity: backstage/anthropic-admin-api-api-sandbox-backstage.yml
+    - title: Anthropic Files API
+      description: >-
+        The Files API allows you to upload and manage files to use with the
+        Anthropic API without having to re-upload content with each request.
+        Upload documents, images, and other supported file types for use in
+        message creation and batch processing.
+      entity: backstage/anthropic-files-api-api-sandbox-backstage.yml
+    - title: Anthropic Message Batches API
+      description: >-
+        Send a batch of Message creation requests. The Message Batches API can
+        be used to process multiple Messages API requests at once. Once a
+        Message Batch is created, it begins processing immediately. Batches can
+        take up to 24 hours to complete.
+      entity: backstage/anthropic-message-batches-api-api-sandbox-backstage.yml
+    - title: Anthropic Prompt Tools API
+      description: >-
+        Manage prompts with generation, improvement, and templatization
+        capabilities.The prompt tools APIs are in a closed research preview.
+        These APIs are a setof tools to generate and improve prompts, similar to
+        what's available in theAnthropic Workbench, and are intended for use by
+        other prompt engineeringplatforms and playgrounds.
+      entity: backstage/anthropic-messages-api-api-sandbox-backstage.yml
+    - title: Anthropic Models API
+      description: >-
+        Send a structured list of input messages with text and/or image content,
+        andthe model will generate the next message in the conversation.This API
+        provides access to list available models, get model details,create
+        messages, and count tokens.
+      entity: backstage/anthropic-models-api-api-sandbox-backstage.yml
+    - title: Anthropic Prompt Tools API
+      description: >-
+        Manage prompts with generation, improvement, and templatization
+        capabilities.The prompt tools APIs are in a closed research preview.
+        These APIs are a setof tools to generate and improve prompts, similar to
+        what's available in theAnthropic Workbench, and are intended for use by
+        other prompt engineeringplatforms and playgrounds.
+      entity: backstage/anthropic-prompts-api-api-sandbox-backstage.yml
+metrics:
+  numberOfPaths: 29
+  numberOfOperations: 43
+  numberOfReadOperations: 19
+  numberOfWriteOperations: 24
+  numberOfSchemas: 106
+  numberOfResponses: 3
+  numberOfParameters: 39
+  numberOfExamples: 76
+  numberOfRequestBodies: 0
+  numberOfHeaders: 7
+  tags:
+    - Api Keys
+    - Files
+    - Message Batches
+    - Messages
+    - Models
+    - Organization
+    - Organization Invites
+    - Organization Members
+    - Prompt Generation
+    - Prompt Improvement
+    - Prompt Templatization
+    - Tokens
+    - Workspace Members
+    - Workspaces
+  operations:
+    - Add Workspace Member
+    - Archive Workspace
+    - Cancel Message Batch
+    - Count Tokens In A Message
+    - Create A Message
+    - Create File
+    - Create Message Batch
+    - Create Organization Invite
+    - Create Workspace
+    - Delete File
+    - Delete Message Batch
+    - Delete Organization Invite
+    - Download File Content
+    - Generate A Prompt
+    - Generate A Prompt
+    - Get A Specific Model
+    - Get Api Key
+    - Get Current Organization
+    - Get File Metadata
+    - Get Organization Invite
+    - Get Organization Member
+    - Get Workspace
+    - Get Workspace Member
+    - Improve A Prompt
+    - Improve A Prompt
+    - List Api Keys
+    - List Available Models
+    - List Files
+    - List Message Batches
+    - List Organization Invites
+    - List Organization Members
+    - List Workspace Members
+    - List Workspaces
+    - Remove Organization Member
+    - Remove Workspace Member
+    - Retrieve Message Batch
+    - Retrieve Message Batch Results
+    - Templatize A Prompt
+    - Templatize A Prompt
+    - Update Api Key
+    - Update Organization Member
+    - Update Workspace
+    - Update Workspace Member
+useCase:
+  - $ref: >-
+      https://github.com/naftiko/schema/blob/main/secondary/use-case/examples/use-case-example-api-sandbox.yml
+stakeholders:
+  - FN: Kin Lane
+    ROLE: Chief Community Officer (CCO)
+    EMAIL: kinlane@naftiko.io
+    SOCIALPROFILE: https://www.linkedin.com/in/kinlane/
+change:
+  state: New
+  schemaVersion: 0.1.0
+  capabilityVersion: 0.1.0
+  updated: '2026-1-28T00:00:00Z'
+  created: '2026-1-28T00:00:00Z'
+source:
+  httpUrl: https://github.com/naftiko/anthropic-sandbox
+  sshUrl: git@github.com:naftiko/anthropic-sandbox.git
+support:
+  issues: https://github.com/naftiko/anthropic-sandbox/issues
+  discussions: https://github.com/orgs/naftiko/discussions
+standards:
+  - name: Naftiko Capabilities
+    description: This uses a exploratory schema to help inform and shape capabilities.
+    docUrl: https://naftiko.github.io/technology/docs/capabilities/
+  - name: OpenAPI
+    description: This uses OpenAPI to define access to all HTTP APIs.
+    docUrl: https://naftiko.github.io/technology/docs/standards/openapi/
+  - name: JSON Schema
+    description: This uses JSON Schema to define and validate all entities used.
+    docUrl: 'https://naftiko.github.io/technology/docs/standards/json-schema/ '
+  - name: Model Context Protocol
+    description: This uses MCP expresed as JSON schema to define each MCP server.
+    docUrl: >-
+      https://naftiko.github.io/technology/docs/standards/model-context-protocol/
+  - name: Bruno Collections
+    description: >-
+      This uses Bruno Collections to define each executable HTTP API
+      integration.
+    docUrl: https://naftiko.github.io/technology/docs/standards/bruno-collections/
+  - name: Bruno Environments
+    description: >-
+      This uses Bruno Environments to store keys for each API to use in
+      automation.
+    docUrl: https://naftiko.github.io/technology/docs/standards/bruno-environments/
+  - name: API Commons
+    description: This uses an API Commons schema to define the plans and rate limits.
+    docUrl: https://naftiko.github.io/technology/docs/standards/api-commons/
+services:
+  - aid: anthropic
+    name: Anthropic API & MCP Sandbox
+    description: >-
+      This is a Anthropic sandbox that uses OpenAPI, Microcks, Bruno, and
+      Backstage to provide a 3rd-party REST API and MCP sandbox for Anthropic.
+    docUrl: https://naftiko.github.io/technology/docs/services/anthropic/
+    apisJson: >-
+      https://raw.githubusercontent.com/api-evangelist/anthropic/refs/heads/main/apis.yml
+    loginUrl: https://console.anthropic.com/login
+observability:
+  visibility: Public

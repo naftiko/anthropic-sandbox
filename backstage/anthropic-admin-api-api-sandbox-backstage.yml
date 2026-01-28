@@ -1,0 +1,1566 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: Anthropic Admin API
+  description: >-
+    Manage administrative functions for Anthropic organizations, workspaces,
+    users, invites, and API keys.
+  tags:
+    - Organization
+    - Organization Members
+    - Organization Invites
+    - Workspaces
+    - Workspace Members
+    - Api Keys
+    - Usage
+  links:
+    - icon: code
+      url: https://github.com/naftiko/anthropic-sandbox
+spec:
+  type: openapi
+  lifecycle: experimental
+  owner: kinlane@naftiko.io
+  definition: |
+    openapi: 3.1.0
+    info:
+      title: anthropic-admin-api
+      description: >-
+        Manage administrative functions for Anthropic organizations, workspaces,
+        users, invites, and API keys.
+      version: 1.0.0
+      contact:
+        name: Anthropic
+        url: https://www.anthropic.com
+        email: support@anthropic.com
+      license:
+        name: Anthropic API License
+        url: https://www.anthropic.com/terms
+    servers:
+      - url: https://api.anthropic.com/v1
+        description: Production Server
+    security:
+      - AdminApiKeyAuth: []
+    tags:
+      - name: Organization
+        description: Retrieve organization information and settings
+      - name: Organization Members
+        description: Manage organization members and their roles
+      - name: Organization Invites
+        description: Create and manage organization invitations
+      - name: Workspaces
+        description: Create and manage workspaces within an organization
+      - name: Workspace Members
+        description: Manage workspace membership and roles
+      - name: Api Keys
+        description: Monitor and manage API keys
+      - name: Usage
+        description: Access usage and cost reports
+    paths:
+      /organizations/me:
+        get:
+          summary: Get Current Organization
+          description: >-
+            Retrieves information about the current authenticated user's
+            organization.
+          operationId: getCurrentOrganization
+          tags:
+            - Organization
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Organization'
+                  examples:
+                    OrganizationExample:
+                      $ref: '#/components/examples/OrganizationExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "OrganizationExample"
+              }
+      /organizations/users:
+        get:
+          summary: List Organization Members
+          description: Retrieves a paginated list of users associated with the organization.
+          operationId: listOrganizationMembers
+          tags:
+            - Organization Members
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/Limit'
+            - $ref: '#/components/parameters/BeforeId'
+            - $ref: '#/components/parameters/AfterId'
+            - name: email
+              in: query
+              required: false
+              description: Filter by user email
+              schema:
+                type: string
+                format: email
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/OrganizationMemberList'
+                  examples:
+                    OrganizationMemberListExample:
+                      $ref: '#/components/examples/OrganizationMemberListExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "OrganizationMemberListExample"
+              }
+      /organizations/users/{user_id}:
+        get:
+          summary: Get Organization Member
+          description: >-
+            Retrieves detailed information about a specific user within an
+            organization.
+          operationId: getOrganizationMember
+          tags:
+            - Organization Members
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/UserId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/OrganizationMember'
+                  examples:
+                    OrganizationMemberExample:
+                      $ref: '#/components/examples/OrganizationMemberExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "OrganizationMemberExample"
+              }
+        post:
+          summary: Update Organization Member
+          description: Updates user information for a specific user within an organization.
+          operationId: updateOrganizationMember
+          tags:
+            - Organization Members
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/UserId'
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UpdateOrganizationMemberRequest'
+                examples:
+                  UpdateOrganizationMemberRequestExample:
+                    $ref: '#/components/examples/UpdateOrganizationMemberRequestExample'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/OrganizationMember'
+                  examples:
+                    OrganizationMemberExample:
+                      $ref: '#/components/examples/OrganizationMemberExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "OrganizationMemberExample"
+              }
+        delete:
+          summary: Remove Organization Member
+          description: Removes a specific user from an organization.
+          operationId: removeOrganizationMember
+          tags:
+            - Organization Members
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/UserId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/UserDeletedResponse'
+                  examples:
+                    UserDeletedResponseExample:
+                      $ref: '#/components/examples/UserDeletedResponseExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "UserDeletedResponseExample"
+              }
+      /organizations/invites:
+        get:
+          summary: List Organization Invites
+          description: Retrieves a paginated list of pending invitations for the organization.
+          operationId: listOrganizationInvites
+          tags:
+            - Organization Invites
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/Limit'
+            - $ref: '#/components/parameters/BeforeId'
+            - $ref: '#/components/parameters/AfterId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/OrganizationInviteList'
+                  examples:
+                    OrganizationInviteListExample:
+                      $ref: '#/components/examples/OrganizationInviteListExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "OrganizationInviteListExample"
+              }
+        post:
+          summary: Create Organization Invite
+          description: >-
+            Creates and sends an invitation to a new member to join the
+            organization.
+          operationId: createOrganizationInvite
+          tags:
+            - Organization Invites
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/CreateOrganizationInviteRequest'
+                examples:
+                  CreateOrganizationInviteRequestExample:
+                    $ref: '#/components/examples/CreateOrganizationInviteRequestExample'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/OrganizationInvite'
+                  examples:
+                    OrganizationInviteExample:
+                      $ref: '#/components/examples/OrganizationInviteExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "OrganizationInviteExample"
+              }
+      /organizations/invites/{invite_id}:
+        get:
+          summary: Get Organization Invite
+          description: Retrieves detailed information about a specific organization invite.
+          operationId: getOrganizationInvite
+          tags:
+            - Organization Invites
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/InviteId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/OrganizationInvite'
+                  examples:
+                    OrganizationInviteExample:
+                      $ref: '#/components/examples/OrganizationInviteExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "OrganizationInviteExample"
+              }
+        delete:
+          summary: Delete Organization Invite
+          description: >-
+            Deletes a specific organization invite, preventing the recipient from
+            accepting it.
+          operationId: deleteOrganizationInvite
+          tags:
+            - Organization Invites
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/InviteId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/InviteDeletedResponse'
+                  examples:
+                    InviteDeletedResponseExample:
+                      $ref: '#/components/examples/InviteDeletedResponseExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "InviteDeletedResponseExample"
+              }
+      /organizations/workspaces:
+        get:
+          summary: List Workspaces
+          description: >-
+            Retrieves a paginated list of workspaces associated with the
+            organization.
+          operationId: listWorkspaces
+          tags:
+            - Workspaces
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/Limit'
+            - $ref: '#/components/parameters/BeforeId'
+            - $ref: '#/components/parameters/AfterId'
+            - name: include_archived
+              in: query
+              required: false
+              description: Whether to include archived workspaces in the response
+              schema:
+                type: boolean
+                default: false
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/WorkspaceList'
+                  examples:
+                    WorkspaceListExample:
+                      $ref: '#/components/examples/WorkspaceListExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "WorkspaceListExample"
+              }
+        post:
+          summary: Create Workspace
+          description: Creates a new workspace within the organization.
+          operationId: createWorkspace
+          tags:
+            - Workspaces
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/CreateWorkspaceRequest'
+                examples:
+                  CreateWorkspaceRequestExample:
+                    $ref: '#/components/examples/CreateWorkspaceRequestExample'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Workspace'
+                  examples:
+                    WorkspaceExample:
+                      $ref: '#/components/examples/WorkspaceExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "WorkspaceExample"
+              }
+      /organizations/workspaces/{workspace_id}:
+        get:
+          summary: Get Workspace
+          description: Retrieves detailed information about a specific workspace.
+          operationId: getWorkspace
+          tags:
+            - Workspaces
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/WorkspaceId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Workspace'
+                  examples:
+                    WorkspaceExample:
+                      $ref: '#/components/examples/WorkspaceExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "WorkspaceExample"
+              }
+        post:
+          summary: Update Workspace
+          description: Updates configuration for a specific workspace.
+          operationId: updateWorkspace
+          tags:
+            - Workspaces
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/WorkspaceId'
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UpdateWorkspaceRequest'
+                examples:
+                  UpdateWorkspaceRequestExample:
+                    $ref: '#/components/examples/UpdateWorkspaceRequestExample'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Workspace'
+                  examples:
+                    WorkspaceExample:
+                      $ref: '#/components/examples/WorkspaceExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "WorkspaceExample"
+              }
+      /organizations/workspaces/{workspace_id}/archive:
+        post:
+          summary: Archive Workspace
+          description: Archives a specific workspace, making it read-only.
+          operationId: archiveWorkspace
+          tags:
+            - Workspaces
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/WorkspaceId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Workspace'
+                  examples:
+                    ArchivedWorkspaceExample:
+                      $ref: '#/components/examples/ArchivedWorkspaceExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "ArchivedWorkspaceExample"
+              }
+      /organizations/workspaces/{workspace_id}/members:
+        get:
+          summary: List Workspace Members
+          description: Retrieves a paginated list of members for a specific workspace.
+          operationId: listWorkspaceMembers
+          tags:
+            - Workspace Members
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/WorkspaceId'
+            - $ref: '#/components/parameters/Limit'
+            - $ref: '#/components/parameters/BeforeId'
+            - $ref: '#/components/parameters/AfterId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/WorkspaceMemberList'
+                  examples:
+                    WorkspaceMemberListExample:
+                      $ref: '#/components/examples/WorkspaceMemberListExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "WorkspaceMemberListExample"
+              }
+        post:
+          summary: Add Workspace Member
+          description: Adds a user as a member of a workspace.
+          operationId: addWorkspaceMember
+          tags:
+            - Workspace Members
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/WorkspaceId'
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AddWorkspaceMemberRequest'
+                examples:
+                  AddWorkspaceMemberRequestExample:
+                    $ref: '#/components/examples/AddWorkspaceMemberRequestExample'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/WorkspaceMember'
+                  examples:
+                    WorkspaceMemberExample:
+                      $ref: '#/components/examples/WorkspaceMemberExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "WorkspaceMemberExample"
+              }
+      /organizations/workspaces/{workspace_id}/members/{user_id}:
+        get:
+          summary: Get Workspace Member
+          description: Retrieves membership details for a specific user in a workspace.
+          operationId: getWorkspaceMember
+          tags:
+            - Workspace Members
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/WorkspaceId'
+            - $ref: '#/components/parameters/UserId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/WorkspaceMember'
+                  examples:
+                    WorkspaceMemberExample:
+                      $ref: '#/components/examples/WorkspaceMemberExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "WorkspaceMemberExample"
+              }
+        post:
+          summary: Update Workspace Member
+          description: Updates the role of a workspace member.
+          operationId: updateWorkspaceMember
+          tags:
+            - Workspace Members
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/WorkspaceId'
+            - $ref: '#/components/parameters/UserId'
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UpdateWorkspaceMemberRequest'
+                examples:
+                  UpdateWorkspaceMemberRequestExample:
+                    $ref: '#/components/examples/UpdateWorkspaceMemberRequestExample'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/WorkspaceMember'
+                  examples:
+                    WorkspaceMemberExample:
+                      $ref: '#/components/examples/WorkspaceMemberExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "WorkspaceMemberExample"
+              }
+        delete:
+          summary: Remove Workspace Member
+          description: Removes a user from a workspace.
+          operationId: removeWorkspaceMember
+          tags:
+            - Workspace Members
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/WorkspaceId'
+            - $ref: '#/components/parameters/UserId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/WorkspaceMemberDeletedResponse'
+                  examples:
+                    WorkspaceMemberDeletedResponseExample:
+                      $ref: '#/components/examples/WorkspaceMemberDeletedResponseExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "WorkspaceMemberDeletedResponseExample"
+              }
+      /organizations/api_keys:
+        get:
+          summary: List Api Keys
+          description: Retrieves a paginated list of API keys for the organization.
+          operationId: listApiKeys
+          tags:
+            - Api Keys
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/Limit'
+            - $ref: '#/components/parameters/BeforeId'
+            - $ref: '#/components/parameters/AfterId'
+            - name: workspace_id
+              in: query
+              required: false
+              description: Filter by workspace ID
+              schema:
+                type: string
+            - name: status
+              in: query
+              required: false
+              description: Filter by API key status
+              schema:
+                type: string
+                enum:
+                  - active
+                  - inactive
+                  - archived
+            - name: created_by_user_id
+              in: query
+              required: false
+              description: Filter by the user who created the API key
+              schema:
+                type: string
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ApiKeyList'
+                  examples:
+                    ApiKeyListExample:
+                      $ref: '#/components/examples/ApiKeyListExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "ApiKeyListExample"
+              }
+      /organizations/api_keys/{api_key_id}:
+        get:
+          summary: Get Api Key
+          description: Retrieves details about a specific API key.
+          operationId: getApiKey
+          tags:
+            - Api Keys
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/ApiKeyId'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ApiKey'
+                  examples:
+                    ApiKeyExample:
+                      $ref: '#/components/examples/ApiKeyExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "ApiKeyExample"
+              }
+        post:
+          summary: Update Api Key
+          description: Updates an API key's name or status.
+          operationId: updateApiKey
+          tags:
+            - Api Keys
+          parameters:
+            - $ref: '#/components/parameters/AnthropicVersion'
+            - $ref: '#/components/parameters/ApiKeyId'
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UpdateApiKeyRequest'
+                examples:
+                  UpdateApiKeyRequestExample:
+                    $ref: '#/components/examples/UpdateApiKeyRequestExample'
+          responses:
+            '200':
+              description: Successful Response
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ApiKey'
+                  examples:
+                    ApiKeyExample:
+                      $ref: '#/components/examples/ApiKeyExample'
+            4XX:
+              $ref: '#/components/responses/ErrorResponse'
+          x-microcks-operation:
+            dispatcher: FALLBACK
+            dispatcherRules: |
+              {
+                "dispatcher": "FALLBACK",
+                "fallback": "ApiKeyExample"
+              }
+    components:
+      securitySchemes:
+        AdminApiKeyAuth:
+          type: apiKey
+          in: header
+          name: x-api-key
+          description: Your Admin API key for authentication (starts with sk-ant-admin...).
+      parameters:
+        AnthropicVersion:
+          name: anthropic-version
+          in: header
+          required: true
+          description: The version of the Anthropic API to use
+          schema:
+            type: string
+            example: '2023-06-01'
+        Limit:
+          name: limit
+          in: query
+          required: false
+          description: >-
+            Number of items to return per page. Defaults to 20. Ranges from 1 to
+            1000.
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 1000
+        BeforeId:
+          name: before_id
+          in: query
+          required: false
+          description: >-
+            ID of the object to use as a cursor for pagination. Returns the page of
+            results immediately before this object.
+          schema:
+            type: string
+        AfterId:
+          name: after_id
+          in: query
+          required: false
+          description: >-
+            ID of the object to use as a cursor for pagination. Returns the page of
+            results immediately after this object.
+          schema:
+            type: string
+        UserId:
+          name: user_id
+          in: path
+          required: true
+          description: Unique identifier for the user
+          schema:
+            type: string
+          example: user_01WCz1FkmYMm4gnmykNKUu3Q
+        InviteId:
+          name: invite_id
+          in: path
+          required: true
+          description: Unique identifier for the invite
+          schema:
+            type: string
+          example: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+        WorkspaceId:
+          name: workspace_id
+          in: path
+          required: true
+          description: Unique identifier for the workspace
+          schema:
+            type: string
+          example: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        ApiKeyId:
+          name: api_key_id
+          in: path
+          required: true
+          description: Unique identifier for the API key
+          schema:
+            type: string
+          example: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+      responses:
+        ErrorResponse:
+          description: Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ErrorExample:
+                  $ref: '#/components/examples/ErrorExample'
+      schemas:
+        Organization:
+          type: object
+          required:
+            - id
+            - type
+            - name
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: Unique organization identifier
+            type:
+              type: string
+              enum:
+                - organization
+              description: Object type identifier
+            name:
+              type: string
+              description: Organization name
+        OrganizationMember:
+          type: object
+          required:
+            - id
+            - type
+            - email
+            - name
+            - role
+            - added_at
+          properties:
+            id:
+              type: string
+              description: Unique user identifier
+            type:
+              type: string
+              enum:
+                - user
+              default: user
+              description: Object type identifier
+            email:
+              type: string
+              format: email
+              description: User email address
+            name:
+              type: string
+              description: User display name
+            role:
+              $ref: '#/components/schemas/OrganizationRole'
+            added_at:
+              type: string
+              format: date-time
+              description: RFC 3339 datetime when user joined the organization
+        OrganizationMemberList:
+          type: object
+          required:
+            - data
+            - has_more
+            - first_id
+            - last_id
+          properties:
+            data:
+              type: array
+              description: List of organization members
+              items:
+                $ref: '#/components/schemas/OrganizationMember'
+            first_id:
+              type: string
+              nullable: true
+              description: First ID in the data list for pagination
+            has_more:
+              type: boolean
+              description: Indicates if there are more results available
+            last_id:
+              type: string
+              nullable: true
+              description: Last ID in the data list for pagination
+        OrganizationRole:
+          type: string
+          enum:
+            - user
+            - claude_code_user
+            - developer
+            - billing
+            - admin
+          description: Role within the organization
+        UpdateOrganizationMemberRequest:
+          type: object
+          required:
+            - role
+          properties:
+            role:
+              $ref: '#/components/schemas/OrganizationRole'
+        UserDeletedResponse:
+          type: object
+          required:
+            - id
+            - type
+          properties:
+            id:
+              type: string
+              description: ID of the deleted user
+            type:
+              type: string
+              enum:
+                - user_deleted
+              default: user_deleted
+              description: Deletion confirmation type
+        OrganizationInvite:
+          type: object
+          required:
+            - id
+            - type
+            - email
+            - role
+            - status
+            - invited_at
+            - expires_at
+          properties:
+            id:
+              type: string
+              description: Unique invite identifier
+            type:
+              type: string
+              enum:
+                - invite
+              default: invite
+              description: Object type identifier
+            email:
+              type: string
+              format: email
+              description: Email address of the invitee
+            role:
+              $ref: '#/components/schemas/OrganizationRole'
+            status:
+              $ref: '#/components/schemas/InviteStatus'
+            invited_at:
+              type: string
+              format: date-time
+              description: RFC 3339 datetime when invite was created
+            expires_at:
+              type: string
+              format: date-time
+              description: RFC 3339 datetime when invite expires
+        InviteStatus:
+          type: string
+          enum:
+            - pending
+            - accepted
+            - expired
+            - deleted
+          description: Current status of the invite
+        OrganizationInviteList:
+          type: object
+          required:
+            - data
+            - has_more
+            - first_id
+            - last_id
+          properties:
+            data:
+              type: array
+              description: List of organization invites
+              items:
+                $ref: '#/components/schemas/OrganizationInvite'
+            first_id:
+              type: string
+              nullable: true
+              description: First ID in the data list for pagination
+            has_more:
+              type: boolean
+              description: Indicates if there are more results available
+            last_id:
+              type: string
+              nullable: true
+              description: Last ID in the data list for pagination
+        CreateOrganizationInviteRequest:
+          type: object
+          required:
+            - email
+            - role
+          properties:
+            email:
+              type: string
+              format: email
+              description: Email address to send the invite to
+            role:
+              $ref: '#/components/schemas/OrganizationRole'
+        InviteDeletedResponse:
+          type: object
+          required:
+            - id
+            - type
+          properties:
+            id:
+              type: string
+              description: ID of the deleted invite
+            type:
+              type: string
+              enum:
+                - invite_deleted
+              default: invite_deleted
+              description: Deletion confirmation type
+        Workspace:
+          type: object
+          required:
+            - id
+            - type
+            - name
+            - created_at
+            - archived_at
+            - display_color
+          properties:
+            id:
+              type: string
+              description: Unique workspace identifier
+            type:
+              type: string
+              enum:
+                - workspace
+              default: workspace
+              description: Object type identifier
+            name:
+              type: string
+              minLength: 1
+              maxLength: 40
+              description: Workspace name
+            display_color:
+              type: string
+              description: Hex color code for UI display
+            created_at:
+              type: string
+              format: date-time
+              description: RFC 3339 datetime when workspace was created
+            archived_at:
+              type: string
+              format: date-time
+              nullable: true
+              description: RFC 3339 datetime when workspace was archived, or null if active
+        WorkspaceList:
+          type: object
+          required:
+            - data
+            - has_more
+            - first_id
+            - last_id
+          properties:
+            data:
+              type: array
+              description: List of workspaces
+              items:
+                $ref: '#/components/schemas/Workspace'
+            first_id:
+              type: string
+              nullable: true
+              description: First ID in the data list for pagination
+            has_more:
+              type: boolean
+              description: Indicates if there are more results available
+            last_id:
+              type: string
+              nullable: true
+              description: Last ID in the data list for pagination
+        CreateWorkspaceRequest:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              type: string
+              minLength: 1
+              maxLength: 40
+              description: Name for the new workspace
+        UpdateWorkspaceRequest:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              type: string
+              minLength: 1
+              maxLength: 40
+              description: Updated name for the workspace
+        WorkspaceMember:
+          type: object
+          required:
+            - type
+            - user_id
+            - workspace_id
+            - workspace_role
+          properties:
+            type:
+              type: string
+              enum:
+                - workspace_member
+              default: workspace_member
+              description: Object type identifier
+            user_id:
+              type: string
+              description: Unique user identifier
+            workspace_id:
+              type: string
+              description: Unique workspace identifier
+            workspace_role:
+              $ref: '#/components/schemas/WorkspaceRole'
+        WorkspaceRole:
+          type: string
+          enum:
+            - workspace_user
+            - workspace_developer
+            - workspace_admin
+            - workspace_billing
+          description: Role within the workspace
+        WorkspaceMemberList:
+          type: object
+          required:
+            - data
+            - has_more
+            - first_id
+            - last_id
+          properties:
+            data:
+              type: array
+              description: List of workspace members
+              items:
+                $ref: '#/components/schemas/WorkspaceMember'
+            first_id:
+              type: string
+              nullable: true
+              description: First ID in the data list for pagination
+            has_more:
+              type: boolean
+              description: Indicates if there are more results available
+            last_id:
+              type: string
+              nullable: true
+              description: Last ID in the data list for pagination
+        AddWorkspaceMemberRequest:
+          type: object
+          required:
+            - user_id
+            - workspace_role
+          properties:
+            user_id:
+              type: string
+              description: ID of the user to add
+            workspace_role:
+              $ref: '#/components/schemas/WorkspaceRole'
+        UpdateWorkspaceMemberRequest:
+          type: object
+          required:
+            - workspace_role
+          properties:
+            workspace_role:
+              $ref: '#/components/schemas/WorkspaceRole'
+        WorkspaceMemberDeletedResponse:
+          type: object
+          required:
+            - type
+            - user_id
+            - workspace_id
+          properties:
+            type:
+              type: string
+              enum:
+                - workspace_member_deleted
+              default: workspace_member_deleted
+              description: Deletion confirmation type
+            user_id:
+              type: string
+              description: ID of the removed user
+            workspace_id:
+              type: string
+              description: ID of the workspace
+        ApiKey:
+          type: object
+          required:
+            - id
+            - type
+            - name
+            - workspace_id
+            - created_at
+            - created_by
+            - status
+          properties:
+            id:
+              type: string
+              description: Unique API key identifier
+            type:
+              type: string
+              enum:
+                - api_key
+              default: api_key
+              description: Object type identifier
+            name:
+              type: string
+              description: Display name for the API key
+            workspace_id:
+              type: string
+              description: ID of the workspace this key belongs to
+            created_at:
+              type: string
+              format: date-time
+              description: RFC 3339 datetime when key was created
+            created_by:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: ID of the user who created the key
+                type:
+                  type: string
+                  enum:
+                    - user
+              description: User who created the API key
+            status:
+              $ref: '#/components/schemas/ApiKeyStatus'
+            last_used_at:
+              type: string
+              format: date-time
+              nullable: true
+              description: RFC 3339 datetime when key was last used
+        ApiKeyStatus:
+          type: string
+          enum:
+            - active
+            - inactive
+            - archived
+          description: Current status of the API key
+        ApiKeyList:
+          type: object
+          required:
+            - data
+            - has_more
+            - first_id
+            - last_id
+          properties:
+            data:
+              type: array
+              description: List of API keys
+              items:
+                $ref: '#/components/schemas/ApiKey'
+            first_id:
+              type: string
+              nullable: true
+              description: First ID in the data list for pagination
+            has_more:
+              type: boolean
+              description: Indicates if there are more results available
+            last_id:
+              type: string
+              nullable: true
+              description: Last ID in the data list for pagination
+        UpdateApiKeyRequest:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Updated display name for the API key
+            status:
+              $ref: '#/components/schemas/ApiKeyStatus'
+        Error:
+          type: object
+          required:
+            - type
+            - message
+          properties:
+            type:
+              type: string
+              description: Error type identifier
+            message:
+              type: string
+              description: Human-readable error message
+      examples:
+        OrganizationExample:
+          summary: Organization Response
+          value:
+            id: 12345678-1234-5678-1234-567812345678
+            type: organization
+            name: Acme Corporation
+        OrganizationMemberExample:
+          summary: Organization Member Response
+          value:
+            id: user_01WCz1FkmYMm4gnmykNKUu3Q
+            type: user
+            email: jane.doe@example.com
+            name: Jane Doe
+            role: developer
+            added_at: '2024-10-30T23:58:27.427722Z'
+        OrganizationMemberListExample:
+          summary: Organization Member List Response
+          value:
+            data:
+              - id: user_01WCz1FkmYMm4gnmykNKUu3Q
+                type: user
+                email: jane.doe@example.com
+                name: Jane Doe
+                role: developer
+                added_at: '2024-10-30T23:58:27.427722Z'
+              - id: user_02XDa2GlnYNn5hoozlNLVu4R
+                type: user
+                email: john.smith@example.com
+                name: John Smith
+                role: user
+                added_at: '2024-10-15T10:30:00.000000Z'
+            first_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+            has_more: false
+            last_id: user_02XDa2GlnYNn5hoozlNLVu4R
+        UpdateOrganizationMemberRequestExample:
+          summary: Update Organization Member Request
+          value:
+            role: developer
+        UserDeletedResponseExample:
+          summary: User Deleted Response
+          value:
+            id: user_01WCz1FkmYMm4gnmykNKUu3Q
+            type: user_deleted
+        OrganizationInviteExample:
+          summary: Organization Invite Response
+          value:
+            id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+            type: invite
+            email: newuser@example.com
+            role: user
+            status: pending
+            invited_at: '2024-10-30T23:58:27.427722Z'
+            expires_at: '2024-11-20T23:58:27.427722Z'
+        OrganizationInviteListExample:
+          summary: Organization Invite List Response
+          value:
+            data:
+              - id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+                type: invite
+                email: newuser@example.com
+                role: user
+                status: pending
+                invited_at: '2024-10-30T23:58:27.427722Z'
+                expires_at: '2024-11-20T23:58:27.427722Z'
+            first_id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+            has_more: false
+            last_id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+        CreateOrganizationInviteRequestExample:
+          summary: Create Organization Invite Request
+          value:
+            email: newuser@example.com
+            role: user
+        InviteDeletedResponseExample:
+          summary: Invite Deleted Response
+          value:
+            id: invite_015gWxCN9Hfg2QhZwTK7Mdeu
+            type: invite_deleted
+        WorkspaceExample:
+          summary: Workspace Response
+          value:
+            id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+            type: workspace
+            name: Engineering Team
+            display_color: '#6C5BB9'
+            created_at: '2024-10-30T23:58:27.427722Z'
+            archived_at: null
+        ArchivedWorkspaceExample:
+          summary: Archived Workspace Response
+          value:
+            id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+            type: workspace
+            name: Engineering Team
+            display_color: '#6C5BB9'
+            created_at: '2024-10-30T23:58:27.427722Z'
+            archived_at: '2024-11-01T23:59:27.427722Z'
+        WorkspaceListExample:
+          summary: Workspace List Response
+          value:
+            data:
+              - id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+                type: workspace
+                name: Engineering Team
+                display_color: '#6C5BB9'
+                created_at: '2024-10-30T23:58:27.427722Z'
+                archived_at: null
+              - id: wrkspc_02KxRvs8sQMB6BHy4ILGgGVK
+                type: workspace
+                name: Marketing Team
+                display_color: '#4A90D9'
+                created_at: '2024-09-15T14:20:00.000000Z'
+                archived_at: null
+            first_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+            has_more: false
+            last_id: wrkspc_02KxRvs8sQMB6BHy4ILGgGVK
+        CreateWorkspaceRequestExample:
+          summary: Create Workspace Request
+          value:
+            name: Engineering Team
+        UpdateWorkspaceRequestExample:
+          summary: Update Workspace Request
+          value:
+            name: Engineering Team - Updated
+        WorkspaceMemberExample:
+          summary: Workspace Member Response
+          value:
+            type: workspace_member
+            user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+            workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+            workspace_role: workspace_developer
+        WorkspaceMemberListExample:
+          summary: Workspace Member List Response
+          value:
+            data:
+              - type: workspace_member
+                user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+                workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+                workspace_role: workspace_developer
+              - type: workspace_member
+                user_id: user_02XDa2GlnYNn5hoozlNLVu4R
+                workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+                workspace_role: workspace_user
+            first_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+            has_more: false
+            last_id: user_02XDa2GlnYNn5hoozlNLVu4R
+        AddWorkspaceMemberRequestExample:
+          summary: Add Workspace Member Request
+          value:
+            user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+            workspace_role: workspace_developer
+        UpdateWorkspaceMemberRequestExample:
+          summary: Update Workspace Member Request
+          value:
+            workspace_role: workspace_admin
+        WorkspaceMemberDeletedResponseExample:
+          summary: Workspace Member Deleted Response
+          value:
+            type: workspace_member_deleted
+            user_id: user_01WCz1FkmYMm4gnmykNKUu3Q
+            workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+        ApiKeyExample:
+          summary: Api Key Response
+          value:
+            id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+            type: api_key
+            name: Production API Key
+            workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+            created_at: '2024-10-30T23:58:27.427722Z'
+            created_by:
+              id: user_01WCz1FkmYMm4gnmykNKUu3Q
+              type: user
+            status: active
+            last_used_at: '2024-11-15T10:30:00.000000Z'
+        ApiKeyListExample:
+          summary: Api Key List Response
+          value:
+            data:
+              - id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+                type: api_key
+                name: Production API Key
+                workspace_id: wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ
+                created_at: '2024-10-30T23:58:27.427722Z'
+                created_by:
+                  id: user_01WCz1FkmYMm4gnmykNKUu3Q
+                  type: user
+                status: active
+                last_used_at: '2024-11-15T10:30:00.000000Z'
+            first_id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+            has_more: false
+            last_id: apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9
+        UpdateApiKeyRequestExample:
+          summary: Update Api Key Request
+          value:
+            name: Production API Key - Renamed
+            status: active
+        ErrorExample:
+          summary: Error Response
+          value:
+            type: invalid_request_error
+            message: The request was invalid or malformed.
