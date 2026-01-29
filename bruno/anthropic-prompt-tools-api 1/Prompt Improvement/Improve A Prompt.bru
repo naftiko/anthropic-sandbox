@@ -1,0 +1,756 @@
+meta {
+  name: Improve A Prompt
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/experimental/improve_prompt
+  body: json
+  auth: inherit
+}
+
+headers {
+  x-api-key: test-key-abc-123
+  Content-Type: application/json
+  anthropic-version: 2023-06-01
+  ~anthropic-beta: BETA_FEATURE_NAME
+  ~anthropic-dangerous-direct-browser-access: true
+}
+
+body:json {
+  {
+    "messages": [
+      {
+        "role": "Engineer",
+        "content": [
+          {
+            "type": "",
+            "text": ""
+          }
+        ]
+      }
+    ],
+    "feedback": "",
+    "system": "",
+    "target_model": "new_model"
+  }
+}
+
+example {
+  name: Improved recipe prompt response (Simple recipe prompt improvement)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/improve_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Concise recipe for {{food}}"
+              }
+            ]
+          }
+        ],
+        "feedback": "Make the recipes shorter"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "You are a professional meal prep chef. Create a detailed recipe for {{food}} including preparation time, cooking time, and step-by-step instructions with specific temperatures and timing for each step."
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Here's a detailed recipe for"
+                }
+              ]
+            }
+          ],
+          "system": "",
+          "usage": {
+            "input_tokens": 45,
+            "output_tokens": 180
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Improved recipe prompt response (Recipe prompt with example interaction)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/improve_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Concise for {{food}}.\n\nexample\n\nmandu: Put the mandu in the air fryer at 380F for 7 minutes."
+              }
+            ]
+          }
+        ],
+        "system": "You are a professional meal prep chef",
+        "feedback": "Make it more detailed and include cooking times",
+        "target_model": "claude-3-7-sonnet-20250219"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "You are a professional meal prep chef. Create a detailed recipe for {{food}} including preparation time, cooking time, and step-by-step instructions with specific temperatures and timing for each step."
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Here's a detailed recipe for"
+                }
+              ]
+            }
+          ],
+          "system": "",
+          "usage": {
+            "input_tokens": 45,
+            "output_tokens": 180
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Bad request error (Simple recipe prompt improvement)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/improve_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Concise recipe for {{food}}"
+              }
+            ]
+          }
+        ],
+        "feedback": "Make the recipes shorter"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "Invalid request format"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Bad request error (Recipe prompt with example interaction)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/improve_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Concise for {{food}}.\n\nexample\n\nmandu: Put the mandu in the air fryer at 380F for 7 minutes."
+              }
+            ]
+          }
+        ],
+        "system": "You are a professional meal prep chef",
+        "feedback": "Make it more detailed and include cooking times",
+        "target_model": "claude-3-7-sonnet-20250219"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "Invalid request format"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Unauthorized error (Simple recipe prompt improvement)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/improve_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Concise recipe for {{food}}"
+              }
+            ]
+          }
+        ],
+        "feedback": "Make the recipes shorter"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "authentication_error",
+          "message": "Invalid or missing API key"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Unauthorized error (Recipe prompt with example interaction)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/improve_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Concise for {{food}}.\n\nexample\n\nmandu: Put the mandu in the air fryer at 380F for 7 minutes."
+              }
+            ]
+          }
+        ],
+        "system": "You are a professional meal prep chef",
+        "feedback": "Make it more detailed and include cooking times",
+        "target_model": "claude-3-7-sonnet-20250219"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "authentication_error",
+          "message": "Invalid or missing API key"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Forbidden error (Simple recipe prompt improvement)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/improve_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Concise recipe for {{food}}"
+              }
+            ]
+          }
+        ],
+        "feedback": "Make the recipes shorter"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 403
+      text: Forbidden
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "permission_error",
+          "message": "Access denied or not in closed research preview"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Forbidden error (Recipe prompt with example interaction)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/improve_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Concise for {{food}}.\n\nexample\n\nmandu: Put the mandu in the air fryer at 380F for 7 minutes."
+              }
+            ]
+          }
+        ],
+        "system": "You are a professional meal prep chef",
+        "feedback": "Make it more detailed and include cooking times",
+        "target_model": "claude-3-7-sonnet-20250219"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 403
+      text: Forbidden
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "permission_error",
+          "message": "Access denied or not in closed research preview"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Rate limit error (Simple recipe prompt improvement)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/improve_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Concise recipe for {{food}}"
+              }
+            ]
+          }
+        ],
+        "feedback": "Make the recipes shorter"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 429
+      text: Too Many Requests
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "rate_limit_error",
+          "message": "Rate limit exceeded. Please retry after some time."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Rate limit error (Recipe prompt with example interaction)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/improve_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Concise for {{food}}.\n\nexample\n\nmandu: Put the mandu in the air fryer at 380F for 7 minutes."
+              }
+            ]
+          }
+        ],
+        "system": "You are a professional meal prep chef",
+        "feedback": "Make it more detailed and include cooking times",
+        "target_model": "claude-3-7-sonnet-20250219"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 429
+      text: Too Many Requests
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "rate_limit_error",
+          "message": "Rate limit exceeded. Please retry after some time."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Server error (Simple recipe prompt improvement)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/improve_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Concise recipe for {{food}}"
+              }
+            ]
+          }
+        ],
+        "feedback": "Make the recipes shorter"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 500
+      text: Internal Server Error
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "api_error",
+          "message": "An internal server error occurred"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Server error (Recipe prompt with example interaction)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/improve_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Concise for {{food}}.\n\nexample\n\nmandu: Put the mandu in the air fryer at 380F for 7 minutes."
+              }
+            ]
+          }
+        ],
+        "system": "You are a professional meal prep chef",
+        "feedback": "Make it more detailed and include cooking times",
+        "target_model": "claude-3-7-sonnet-20250219"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 500
+      text: Internal Server Error
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "api_error",
+          "message": "An internal server error occurred"
+        }
+      '''
+    }
+  }
+}

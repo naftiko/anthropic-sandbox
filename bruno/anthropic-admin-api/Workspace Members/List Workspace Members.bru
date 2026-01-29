@@ -1,0 +1,128 @@
+meta {
+  name: List Workspace Members
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/organizations/workspaces/:workspace_id/members
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~limit: 25
+  ~before_id: 123
+  ~after_id: 123
+}
+
+params:path {
+  workspace_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+}
+
+example {
+  name: Workspace Member List Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/workspaces/:workspace_id/members
+    method: GET
+    mode: none
+    params:query: {
+      ~limit: 25
+      ~before_id: 123
+      ~after_id: 123
+    }
+  
+    params:path: {
+      workspace_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "data": [
+            {
+              "type": "workspace_member",
+              "user_id": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+              "workspace_id": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+              "workspace_role": "workspace_developer"
+            },
+            {
+              "type": "workspace_member",
+              "user_id": "user_02XDa2GlnYNn5hoozlNLVu4R",
+              "workspace_id": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+              "workspace_role": "workspace_user"
+            }
+          ],
+          "first_id": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+          "has_more": false,
+          "last_id": "user_02XDa2GlnYNn5hoozlNLVu4R"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/workspaces/:workspace_id/members
+    method: GET
+    mode: none
+    params:query: {
+      ~limit: 25
+      ~before_id: 123
+      ~after_id: 123
+    }
+  
+    params:path: {
+      workspace_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The request was invalid or malformed."
+        }
+      '''
+    }
+  }
+}

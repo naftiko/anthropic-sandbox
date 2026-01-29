@@ -1,0 +1,134 @@
+meta {
+  name: List Files
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/files
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~limit: 25
+  ~before_id: 123
+  ~after_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+  anthropic-beta: BETA_FEATURE_NAME
+}
+
+example {
+  name: File List Response
+  
+  request: {
+    url: {{baseUrl}}/files
+    method: GET
+    mode: none
+    params:query: {
+      ~limit: 25
+      ~before_id: 123
+      ~after_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      anthropic-beta: BETA_FEATURE_NAME
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "data": [
+            {
+              "id": "file_011CNha8iCJcU1wXNR6q4V8w",
+              "type": "file",
+              "filename": "quarterly-report.pdf",
+              "mime_type": "application/pdf",
+              "size_bytes": 2048576,
+              "created_at": "2024-11-07T05:31:56Z",
+              "downloadable": true
+            },
+            {
+              "id": "file_022DOib9jDKdV2yYOS7r5W9x",
+              "type": "file",
+              "filename": "product-image.png",
+              "mime_type": "image/png",
+              "size_bytes": 524288,
+              "created_at": "2024-11-06T14:22:30Z",
+              "downloadable": true
+            },
+            {
+              "id": "file_033EPjc0kELeW3zZPT8s6X0y",
+              "type": "file",
+              "filename": "data-export.csv",
+              "mime_type": "text/csv",
+              "size_bytes": 102400,
+              "created_at": "2024-11-05T09:15:00Z",
+              "downloadable": true
+            }
+          ],
+          "first_id": "file_011CNha8iCJcU1wXNR6q4V8w",
+          "has_more": true,
+          "last_id": "file_033EPjc0kELeW3zZPT8s6X0y"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/files
+    method: GET
+    mode: none
+    params:query: {
+      ~limit: 25
+      ~before_id: 123
+      ~after_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      anthropic-beta: BETA_FEATURE_NAME
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "not_found_error",
+          "message": "The requested file could not be found."
+        }
+      '''
+    }
+  }
+}

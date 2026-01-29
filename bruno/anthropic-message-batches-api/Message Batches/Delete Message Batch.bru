@@ -1,0 +1,98 @@
+meta {
+  name: Delete Message Batch
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/messages/batches/:message_batch_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  message_batch_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+  ~anthropic-beta: BETA_FEATURE_NAME
+}
+
+example {
+  name: Message Batch Deleted Response
+  
+  request: {
+    url: {{baseUrl}}/messages/batches/:message_batch_id
+    method: DELETE
+    mode: none
+    params:path: {
+      message_batch_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF",
+          "type": "message_batch_deleted"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/messages/batches/:message_batch_id
+    method: DELETE
+    mode: none
+    params:path: {
+      message_batch_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The message_batch_id provided is invalid or does not exist."
+        }
+      '''
+    }
+  }
+}

@@ -1,0 +1,296 @@
+meta {
+  name: Count Tokens In A Message
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/messages/count_tokens
+  body: json
+  auth: inherit
+}
+
+headers {
+  anthropic-version: 2023-06-01
+  x-api-key: test-key-abc-123
+  Content-Type: application/json
+  anthropic-beta: BETA_FEATURE_NAME
+  anthropic-dangerous-direct-browser-access: true
+}
+
+body:json {
+  {
+    "messages": [
+      {
+        "role": "Engineer",
+        "content": ""
+      }
+    ],
+    "model": "",
+    "system": "",
+    "thinking": {
+      "enabled": false
+    },
+    "tool_choice": "",
+    "tools": [
+      {
+        "name": "",
+        "description": "",
+        "input_schema": {
+          "type": "",
+          "properties": {},
+          "required": []
+        }
+      }
+    ]
+  }
+}
+
+example {
+  name: Count tokens response (Count tokens request)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages/count_tokens
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Hello, how are you?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "input_tokens": 2095
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Bad request error (Count tokens request)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages/count_tokens
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Hello, how are you?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "Invalid request format"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Unauthorized error (Count tokens request)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages/count_tokens
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Hello, how are you?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "authentication_error",
+          "message": "Invalid or missing API key"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Rate limit error (Count tokens request)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages/count_tokens
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Hello, how are you?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 429
+      text: Too Many Requests
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "rate_limit_error",
+          "message": "Rate limit exceeded. Please retry after some time."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Server error (Count tokens request)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages/count_tokens
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Hello, how are you?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 500
+      text: Internal Server Error
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "api_error",
+          "message": "An internal server error occurred"
+        }
+      '''
+    }
+  }
+}

@@ -1,0 +1,123 @@
+meta {
+  name: List Workspaces
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/organizations/workspaces
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~limit: 25
+  ~before_id: 123
+  ~after_id: 123
+  ~include_archived: 
+}
+
+headers {
+  anthropic-version: 2023-06-01
+}
+
+example {
+  name: Workspace List Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/workspaces
+    method: GET
+    mode: none
+    params:query: {
+      ~limit: 25
+      ~before_id: 123
+      ~after_id: 123
+      ~include_archived: 
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "data": [
+            {
+              "id": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+              "type": "workspace",
+              "name": "Engineering Team",
+              "display_color": "#6C5BB9",
+              "created_at": "2024-10-30T23:58:27.427722Z",
+              "archived_at": null
+            },
+            {
+              "id": "wrkspc_02KxRvs8sQMB6BHy4ILGgGVK",
+              "type": "workspace",
+              "name": "Marketing Team",
+              "display_color": "#4A90D9",
+              "created_at": "2024-09-15T14:20:00.000000Z",
+              "archived_at": null
+            }
+          ],
+          "first_id": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+          "has_more": false,
+          "last_id": "wrkspc_02KxRvs8sQMB6BHy4ILGgGVK"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/workspaces
+    method: GET
+    mode: none
+    params:query: {
+      ~limit: 25
+      ~before_id: 123
+      ~after_id: 123
+      ~include_archived: 
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The request was invalid or malformed."
+        }
+      '''
+    }
+  }
+}

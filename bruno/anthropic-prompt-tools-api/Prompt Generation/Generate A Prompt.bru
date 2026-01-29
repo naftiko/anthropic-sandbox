@@ -1,0 +1,606 @@
+meta {
+  name: Generate A Prompt
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/experimental/generate_prompt
+  body: json
+  auth: inherit
+}
+
+headers {
+  x-api-key: Test
+  Content-Type: application/json
+  anthropic-version: 2023-06-01
+  anthropic-beta: Test
+  anthropic-dangerous-direct-browser-access: Test
+}
+
+body:json {
+  {
+    "task": "This is a task.",
+    "target_model": "new_model"
+  }
+}
+
+example {
+  name: Chef prompt response (Chef for meal prep service)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/generate_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "task": "a chef for a meal prep planning service",
+        "target_model": "claude-3-7-sonnet-20250219"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "You are a chef for a meal prep planning service. Your role is to help users plan their weekly meals, create shopping lists, and provide cooking instructions. Always consider dietary restrictions and preferences when making suggestions."
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "<recipe_planning>"
+                }
+              ]
+            }
+          ],
+          "system": "",
+          "usage": {
+            "input_tokens": 25,
+            "output_tokens": 150
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Chef prompt response (Basic task only)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/generate_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "task": "a helpful writing assistant for creative fiction"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "You are a chef for a meal prep planning service. Your role is to help users plan their weekly meals, create shopping lists, and provide cooking instructions. Always consider dietary restrictions and preferences when making suggestions."
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "<recipe_planning>"
+                }
+              ]
+            }
+          ],
+          "system": "",
+          "usage": {
+            "input_tokens": 25,
+            "output_tokens": 150
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Bad request error (Chef for meal prep service)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/generate_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "task": "a chef for a meal prep planning service",
+        "target_model": "claude-3-7-sonnet-20250219"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "Invalid request format"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Bad request error (Basic task only)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/generate_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "task": "a helpful writing assistant for creative fiction"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "Invalid request format"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Unauthorized error (Chef for meal prep service)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/generate_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "task": "a chef for a meal prep planning service",
+        "target_model": "claude-3-7-sonnet-20250219"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "authentication_error",
+          "message": "Invalid or missing API key"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Unauthorized error (Basic task only)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/generate_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "task": "a helpful writing assistant for creative fiction"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "authentication_error",
+          "message": "Invalid or missing API key"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Forbidden error (Chef for meal prep service)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/generate_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "task": "a chef for a meal prep planning service",
+        "target_model": "claude-3-7-sonnet-20250219"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 403
+      text: Forbidden
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "permission_error",
+          "message": "Access denied or not in closed research preview"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Forbidden error (Basic task only)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/generate_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "task": "a helpful writing assistant for creative fiction"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 403
+      text: Forbidden
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "permission_error",
+          "message": "Access denied or not in closed research preview"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Rate limit error (Chef for meal prep service)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/generate_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "task": "a chef for a meal prep planning service",
+        "target_model": "claude-3-7-sonnet-20250219"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 429
+      text: Too Many Requests
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "rate_limit_error",
+          "message": "Rate limit exceeded. Please retry after some time."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Rate limit error (Basic task only)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/generate_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "task": "a helpful writing assistant for creative fiction"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 429
+      text: Too Many Requests
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "rate_limit_error",
+          "message": "Rate limit exceeded. Please retry after some time."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Server error (Chef for meal prep service)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/generate_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "task": "a chef for a meal prep planning service",
+        "target_model": "claude-3-7-sonnet-20250219"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 500
+      text: Internal Server Error
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "api_error",
+          "message": "An internal server error occurred"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Server error (Basic task only)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/generate_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "task": "a helpful writing assistant for creative fiction"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 500
+      text: Internal Server Error
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "api_error",
+          "message": "An internal server error occurred"
+        }
+      '''
+    }
+  }
+}

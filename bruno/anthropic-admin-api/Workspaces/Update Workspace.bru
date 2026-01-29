@@ -1,0 +1,117 @@
+meta {
+  name: Update Workspace
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/organizations/workspaces/:workspace_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  workspace_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+}
+
+body:json {
+  {
+    "name": ""
+  }
+}
+
+example {
+  name: Workspace Response (Update Workspace Request)
+  
+  request: {
+    url: {{baseUrl}}/organizations/workspaces/:workspace_id
+    method: POST
+    mode: json
+    params:path: {
+      workspace_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "name": "Engineering Team - Updated"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+          "type": "workspace",
+          "name": "Engineering Team",
+          "display_color": "#6C5BB9",
+          "created_at": "2024-10-30T23:58:27.427722Z",
+          "archived_at": null
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response (Update Workspace Request)
+  
+  request: {
+    url: {{baseUrl}}/organizations/workspaces/:workspace_id
+    method: POST
+    mode: json
+    params:path: {
+      workspace_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "name": "Engineering Team - Updated"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The request was invalid or malformed."
+        }
+      '''
+    }
+  }
+}

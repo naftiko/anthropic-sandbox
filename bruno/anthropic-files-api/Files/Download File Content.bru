@@ -1,0 +1,96 @@
+meta {
+  name: Download File Content
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/files/:file_id/content
+  body: none
+  auth: inherit
+}
+
+params:path {
+  file_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+  anthropic-beta: BETA_FEATURE_NAME
+}
+
+example {
+  name: 200 Response
+  description: Successful Response - Returns the file content as binary data
+  
+  request: {
+    url: {{baseUrl}}/files/:file_id/content
+    method: GET
+    mode: none
+    params:path: {
+      file_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      anthropic-beta: BETA_FEATURE_NAME
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/octet-stream
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: text
+      content: '''
+  
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/files/:file_id/content
+    method: GET
+    mode: none
+    params:path: {
+      file_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      anthropic-beta: BETA_FEATURE_NAME
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "not_found_error",
+          "message": "The requested file could not be found."
+        }
+      '''
+    }
+  }
+}

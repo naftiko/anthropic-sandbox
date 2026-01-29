@@ -1,0 +1,123 @@
+meta {
+  name: List Organization Members
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/organizations/users
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~limit: 25
+  ~before_id: 123
+  ~after_id: 123
+  ~email: 
+}
+
+headers {
+  anthropic-version: 2023-06-01
+}
+
+example {
+  name: Organization Member List Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/users
+    method: GET
+    mode: none
+    params:query: {
+      ~limit: 25
+      ~before_id: 123
+      ~after_id: 123
+      ~email: 
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "data": [
+            {
+              "id": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+              "type": "user",
+              "email": "jane.doe@example.com",
+              "name": "Jane Doe",
+              "role": "developer",
+              "added_at": "2024-10-30T23:58:27.427722Z"
+            },
+            {
+              "id": "user_02XDa2GlnYNn5hoozlNLVu4R",
+              "type": "user",
+              "email": "john.smith@example.com",
+              "name": "John Smith",
+              "role": "user",
+              "added_at": "2024-10-15T10:30:00.000000Z"
+            }
+          ],
+          "first_id": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+          "has_more": false,
+          "last_id": "user_02XDa2GlnYNn5hoozlNLVu4R"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/users
+    method: GET
+    mode: none
+    params:query: {
+      ~limit: 25
+      ~before_id: 123
+      ~after_id: 123
+      ~email: 
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The request was invalid or malformed."
+        }
+      '''
+    }
+  }
+}

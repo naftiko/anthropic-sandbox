@@ -1,0 +1,266 @@
+meta {
+  name: List Available Models
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v1/models
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~before_id: 123
+  ~after_id: 123
+  ~limit: 25
+}
+
+headers {
+  anthropic-version: 2023-06-01
+  x-api-key: test-key-abc-123
+  Content-Type: application/json
+  ~anthropic-beta: BETA_FEATURE_NAME
+  ~anthropic-dangerous-direct-browser-access: true
+}
+
+example {
+  name: List of available models
+  
+  request: {
+    url: {{baseUrl}}/v1/models
+    method: GET
+    mode: none
+    params:query: {
+      ~before_id: 123
+      ~after_id: 123
+      ~limit: 25
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "data": [
+            {
+              "id": "claude-sonnet-4-20250514",
+              "type": "model",
+              "display_name": "Claude Sonnet 4",
+              "created_at": "2025-05-14T00:00:00Z"
+            },
+            {
+              "id": "claude-3-5-sonnet-20241022",
+              "type": "model",
+              "display_name": "Claude 3.5 Sonnet",
+              "created_at": "2024-10-22T00:00:00Z"
+            },
+            {
+              "id": "claude-3-haiku-20240307",
+              "type": "model",
+              "display_name": "Claude 3 Haiku",
+              "created_at": "2024-03-07T00:00:00Z"
+            }
+          ],
+          "first_id": "claude-sonnet-4-20250514",
+          "has_more": true,
+          "last_id": "claude-3-haiku-20240307"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Bad request error
+  
+  request: {
+    url: {{baseUrl}}/v1/models
+    method: GET
+    mode: none
+    params:query: {
+      ~before_id: 123
+      ~after_id: 123
+      ~limit: 25
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "Invalid request format"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Unauthorized error
+  
+  request: {
+    url: {{baseUrl}}/v1/models
+    method: GET
+    mode: none
+    params:query: {
+      ~before_id: 123
+      ~after_id: 123
+      ~limit: 25
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "authentication_error",
+          "message": "Invalid or missing API key"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Rate limit error
+  
+  request: {
+    url: {{baseUrl}}/v1/models
+    method: GET
+    mode: none
+    params:query: {
+      ~before_id: 123
+      ~after_id: 123
+      ~limit: 25
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 429
+      text: Too Many Requests
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "rate_limit_error",
+          "message": "Rate limit exceeded. Please retry after some time."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Server error
+  
+  request: {
+    url: {{baseUrl}}/v1/models
+    method: GET
+    mode: none
+    params:query: {
+      ~before_id: 123
+      ~after_id: 123
+      ~limit: 25
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 500
+      text: Internal Server Error
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "api_error",
+          "message": "An internal server error occurred"
+        }
+      '''
+    }
+  }
+}

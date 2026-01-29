@@ -1,0 +1,212 @@
+meta {
+  name: Create Message Batch
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/messages/batches
+  body: json
+  auth: inherit
+}
+
+headers {
+  anthropic-version: 2023-06-01
+  ~anthropic-beta: BETA_FEATURE_NAME
+}
+
+body:json {
+  {
+    "requests": [
+      {
+        "custom_id": "",
+        "params": {
+          "model": "",
+          "max_tokens": 0,
+          "messages": [
+            {
+              "role": "Engineer",
+              "content": ""
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+
+example {
+  name: Message Batch Response (Create Message Batch Request)
+  
+  request: {
+    url: {{baseUrl}}/messages/batches
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+    }
+  
+    body:json: {
+      {
+        "requests": [
+          {
+            "custom_id": "request-001",
+            "params": {
+              "model": "claude-sonnet-4-20250514",
+              "max_tokens": 1024,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Hello, what is the capital of France?"
+                }
+              ]
+            }
+          },
+          {
+            "custom_id": "request-002",
+            "params": {
+              "model": "claude-sonnet-4-20250514",
+              "max_tokens": 1024,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Explain quantum computing in simple terms."
+                }
+              ]
+            }
+          },
+          {
+            "custom_id": "request-003",
+            "params": {
+              "model": "claude-sonnet-4-20250514",
+              "max_tokens": 2048,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Write a haiku about programming."
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF",
+          "type": "message_batch",
+          "processing_status": "in_progress",
+          "request_counts": {
+            "processing": 100,
+            "succeeded": 50,
+            "errored": 0,
+            "canceled": 0,
+            "expired": 0
+          },
+          "created_at": "2024-08-20T18:37:24.100435Z",
+          "expires_at": "2024-08-21T18:37:24.100435Z",
+          "archived_at": null,
+          "cancel_initiated_at": null,
+          "ended_at": null,
+          "results_url": null
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response (Create Message Batch Request)
+  
+  request: {
+    url: {{baseUrl}}/messages/batches
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+    }
+  
+    body:json: {
+      {
+        "requests": [
+          {
+            "custom_id": "request-001",
+            "params": {
+              "model": "claude-sonnet-4-20250514",
+              "max_tokens": 1024,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Hello, what is the capital of France?"
+                }
+              ]
+            }
+          },
+          {
+            "custom_id": "request-002",
+            "params": {
+              "model": "claude-sonnet-4-20250514",
+              "max_tokens": 1024,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Explain quantum computing in simple terms."
+                }
+              ]
+            }
+          },
+          {
+            "custom_id": "request-003",
+            "params": {
+              "model": "claude-sonnet-4-20250514",
+              "max_tokens": 2048,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Write a haiku about programming."
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The message_batch_id provided is invalid or does not exist."
+        }
+      '''
+    }
+  }
+}

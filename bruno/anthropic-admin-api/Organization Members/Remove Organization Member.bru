@@ -1,0 +1,95 @@
+meta {
+  name: Remove Organization Member
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/organizations/users/:user_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  user_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+}
+
+example {
+  name: User Deleted Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/users/:user_id
+    method: DELETE
+    mode: none
+    params:path: {
+      user_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+          "type": "user_deleted"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/users/:user_id
+    method: DELETE
+    mode: none
+    params:path: {
+      user_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The request was invalid or malformed."
+        }
+      '''
+    }
+  }
+}

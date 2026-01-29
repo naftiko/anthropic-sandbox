@@ -1,0 +1,97 @@
+meta {
+  name: Retrieve Message Batch Results
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/messages/batches/:message_batch_id/results
+  body: none
+  auth: inherit
+}
+
+params:path {
+  message_batch_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+  ~anthropic-beta: BETA_FEATURE_NAME
+}
+
+example {
+  name: Message Batch Results
+  
+  request: {
+    url: {{baseUrl}}/messages/batches/:message_batch_id/results
+    method: GET
+    mode: none
+    params:path: {
+      message_batch_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/x-jsonl
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: text
+      content: '''
+        {"custom_id":"request-001","result":{"type":"succeeded","message":{"id":"msg_01FqfsLoHwgeFbguDgpz48m7","type":"message","role":"assistant","model":"claude-sonnet-4-20250514","content":[{"type":"text","text":"The capital of France is Paris."}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":15,"output_tokens":8}}}}
+        {"custom_id":"request-002","result":{"type":"succeeded","message":{"id":"msg_02GrsrtMhxghGfchvEhq59n8","type":"message","role":"assistant","model":"claude-sonnet-4-20250514","content":[{"type":"text","text":"Quantum computing uses quantum bits or qubits that can exist in multiple states simultaneously, unlike classical bits which are either 0 or 1."}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":12,"output_tokens":35}}}}
+        
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/messages/batches/:message_batch_id/results
+    method: GET
+    mode: none
+    params:path: {
+      message_batch_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The message_batch_id provided is invalid or does not exist."
+        }
+      '''
+    }
+  }
+}

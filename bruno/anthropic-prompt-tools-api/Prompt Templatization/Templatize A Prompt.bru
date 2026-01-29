@@ -1,0 +1,726 @@
+meta {
+  name: Templatize A Prompt
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/experimental/templatize_prompt
+  body: json
+  auth: inherit
+}
+
+headers {
+  x-api-key: test-key-abc-123
+  Content-Type: application/json
+  anthropic-version: 2023-06-01
+  ~anthropic-beta: BETA_FEATURE_NAME
+  ~anthropic-dangerous-direct-browser-access: true
+}
+
+body:json {
+  {
+    "messages": [
+      {
+        "role": "Engineer",
+        "content": [
+          {
+            "type": "Text",
+            "text": "This is a test."
+          }
+        ]
+      }
+    ],
+    "system": "Entire"
+  }
+}
+
+example {
+  name: Templatized translation prompt (Simple translation prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/templatize_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Translate hello to German"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Translate {{WORD_TO_TRANSLATE}} to {{TARGET_LANGUAGE}}"
+                }
+              ]
+            }
+          ],
+          "system": "You are a professional English to {{TARGET_LANGUAGE}} translator",
+          "usage": {
+            "input_tokens": 15,
+            "output_tokens": 25
+          },
+          "variable_values": {
+            "WORD_TO_TRANSLATE": "hello",
+            "TARGET_LANGUAGE": "German"
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Templatized translation prompt (Translation with system prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/templatize_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Translate hello to German"
+              }
+            ]
+          }
+        ],
+        "system": "You are a professional English to German translator"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Translate {{WORD_TO_TRANSLATE}} to {{TARGET_LANGUAGE}}"
+                }
+              ]
+            }
+          ],
+          "system": "You are a professional English to {{TARGET_LANGUAGE}} translator",
+          "usage": {
+            "input_tokens": 15,
+            "output_tokens": 25
+          },
+          "variable_values": {
+            "WORD_TO_TRANSLATE": "hello",
+            "TARGET_LANGUAGE": "German"
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Bad request error (Simple translation prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/templatize_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Translate hello to German"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "Invalid request format"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Bad request error (Translation with system prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/templatize_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Translate hello to German"
+              }
+            ]
+          }
+        ],
+        "system": "You are a professional English to German translator"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "Invalid request format"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Unauthorized error (Simple translation prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/templatize_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Translate hello to German"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "authentication_error",
+          "message": "Invalid or missing API key"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Unauthorized error (Translation with system prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/templatize_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Translate hello to German"
+              }
+            ]
+          }
+        ],
+        "system": "You are a professional English to German translator"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "authentication_error",
+          "message": "Invalid or missing API key"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Forbidden error (Simple translation prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/templatize_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Translate hello to German"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 403
+      text: Forbidden
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "permission_error",
+          "message": "Access denied or not in closed research preview"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Forbidden error (Translation with system prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/templatize_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Translate hello to German"
+              }
+            ]
+          }
+        ],
+        "system": "You are a professional English to German translator"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 403
+      text: Forbidden
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "permission_error",
+          "message": "Access denied or not in closed research preview"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Rate limit error (Simple translation prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/templatize_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Translate hello to German"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 429
+      text: Too Many Requests
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "rate_limit_error",
+          "message": "Rate limit exceeded. Please retry after some time."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Rate limit error (Translation with system prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/templatize_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Translate hello to German"
+              }
+            ]
+          }
+        ],
+        "system": "You are a professional English to German translator"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 429
+      text: Too Many Requests
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "rate_limit_error",
+          "message": "Rate limit exceeded. Please retry after some time."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Server error (Simple translation prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/templatize_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Translate hello to German"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 500
+      text: Internal Server Error
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "api_error",
+          "message": "An internal server error occurred"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Server error (Translation with system prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/experimental/templatize_prompt
+    method: POST
+    mode: json
+    headers: {
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Translate hello to German"
+              }
+            ]
+          }
+        ],
+        "system": "You are a professional English to German translator"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 500
+      text: Internal Server Error
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "api_error",
+          "message": "An internal server error occurred"
+        }
+      '''
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "anthropic-message-batches-api",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

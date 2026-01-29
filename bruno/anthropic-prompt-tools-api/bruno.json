@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "anthropic-prompt-tools-api",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

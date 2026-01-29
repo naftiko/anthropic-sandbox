@@ -1,0 +1,84 @@
+meta {
+  name: Get Current Organization
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/organizations/me
+  body: none
+  auth: inherit
+}
+
+headers {
+  anthropic-version: 2023-06-01
+}
+
+example {
+  name: Organization Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/me
+    method: GET
+    mode: none
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "12345678-1234-5678-1234-567812345678",
+          "type": "organization",
+          "name": "Acme Corporation"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/me
+    method: GET
+    mode: none
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The request was invalid or malformed."
+        }
+      '''
+    }
+  }
+}

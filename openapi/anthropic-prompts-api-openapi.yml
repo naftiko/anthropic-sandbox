@@ -50,9 +50,9 @@ paths:
       tags:
         - Prompt Generation
       x-microcks-operation:
-        dispatcher: FALLBACK
-        dispatcherRules: ''
-        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: |
+          return "ChefResponse"
       parameters:
         - $ref: '#/components/parameters/AnthropicBetaHeader'
         - $ref: '#/components/parameters/ApiKeyHeader'
@@ -144,9 +144,9 @@ paths:
       tags:
         - Prompt Improvement
       x-microcks-operation:
-        dispatcher: FALLBACK
-        dispatcherRules: ''
-        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: |
+          return "ImprovedRecipeResponse"
       parameters:
         - $ref: '#/components/parameters/AnthropicBetaHeader'
         - $ref: '#/components/parameters/ApiKeyHeader'
@@ -238,9 +238,9 @@ paths:
       tags:
         - Prompt Templatization
       x-microcks-operation:
-        dispatcher: FALLBACK
-        dispatcherRules: ''
-        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: |
+          return "TemplatizedTranslationResponse"
       parameters:
         - $ref: '#/components/parameters/AnthropicBetaHeader'
         - $ref: '#/components/parameters/ApiKeyHeader'

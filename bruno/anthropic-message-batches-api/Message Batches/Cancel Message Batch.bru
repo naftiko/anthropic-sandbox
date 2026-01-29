@@ -1,0 +1,112 @@
+meta {
+  name: Cancel Message Batch
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/messages/batches/:message_batch_id/cancel
+  body: none
+  auth: inherit
+}
+
+params:path {
+  message_batch_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+  ~anthropic-beta: BETA_FEATURE_NAME
+}
+
+example {
+  name: Canceled Message Batch Response
+  
+  request: {
+    url: {{baseUrl}}/messages/batches/:message_batch_id/cancel
+    method: POST
+    mode: none
+    params:path: {
+      message_batch_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "msgbatch_013Zva2CMHLNnXjNJJKqJ2EF",
+          "type": "message_batch",
+          "processing_status": "canceling",
+          "request_counts": {
+            "processing": 50,
+            "succeeded": 40,
+            "errored": 5,
+            "canceled": 5,
+            "expired": 0
+          },
+          "created_at": "2024-08-20T18:37:24.100435Z",
+          "expires_at": "2024-08-21T18:37:24.100435Z",
+          "archived_at": null,
+          "cancel_initiated_at": "2024-08-20T19:00:00.000000Z",
+          "ended_at": null,
+          "results_url": null
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/messages/batches/:message_batch_id/cancel
+    method: POST
+    mode: none
+    params:path: {
+      message_batch_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The message_batch_id provided is invalid or does not exist."
+        }
+      '''
+    }
+  }
+}

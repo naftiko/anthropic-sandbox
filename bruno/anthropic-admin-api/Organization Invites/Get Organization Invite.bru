@@ -1,0 +1,100 @@
+meta {
+  name: Get Organization Invite
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/organizations/invites/:invite_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  invite_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+}
+
+example {
+  name: Organization Invite Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/invites/:invite_id
+    method: GET
+    mode: none
+    params:path: {
+      invite_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "invite_015gWxCN9Hfg2QhZwTK7Mdeu",
+          "type": "invite",
+          "email": "newuser@example.com",
+          "role": "user",
+          "status": "pending",
+          "invited_at": "2024-10-30T23:58:27.427722Z",
+          "expires_at": "2024-11-20T23:58:27.427722Z"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/invites/:invite_id
+    method: GET
+    mode: none
+    params:path: {
+      invite_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The request was invalid or malformed."
+        }
+      '''
+    }
+  }
+}

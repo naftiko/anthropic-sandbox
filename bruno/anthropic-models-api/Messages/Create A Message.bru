@@ -1,0 +1,980 @@
+meta {
+  name: Create A Message
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/messages
+  body: json
+  auth: inherit
+}
+
+headers {
+  anthropic-version: 2023-06-01
+  x-api-key: test-key-abc-123
+  Content-Type: application/json
+  anthropic-beta: BETA_FEATURE_NAME
+  anthropic-dangerous-direct-browser-access: true
+}
+
+body:json {
+  {
+    "model": "",
+    "messages": [
+      {
+        "role": "Engineer",
+        "content": ""
+      }
+    ],
+    "max_tokens": 0,
+    "container": "",
+    "metadata": {
+      "user_id": "123"
+    },
+    "service_tier": "",
+    "stop_sequences": [],
+    "stream": false,
+    "system": "",
+    "temperature": 0,
+    "thinking": {
+      "enabled": false
+    },
+    "tool_choice": "",
+    "tools": [
+      {
+        "name": "",
+        "description": "",
+        "input_schema": {
+          "type": "",
+          "properties": {},
+          "required": []
+        }
+      }
+    ],
+    "top_k": 0,
+    "top_p": 0
+  }
+}
+
+example {
+  name: Successful message response (Simple message request)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "role": "user",
+            "content": "Hello, Claude! How are you today?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hi! My name is Claude. I'm doing well, thank you for asking! How can I help you today?"
+            }
+          ],
+          "model": "claude-sonnet-4-20250514",
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "usage": {
+            "input_tokens": 12,
+            "output_tokens": 25
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Successful message response (Message request with system prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "system": "You are a helpful assistant that specializes in explaining complex topics simply.",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Can you explain quantum computing to me?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hi! My name is Claude. I'm doing well, thank you for asking! How can I help you today?"
+            }
+          ],
+          "model": "claude-sonnet-4-20250514",
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "usage": {
+            "input_tokens": 12,
+            "output_tokens": 25
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Successful message response (Message request with tools)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "role": "user",
+            "content": "What's the weather like in San Francisco?"
+          }
+        ],
+        "tools": [
+          {
+            "name": "get_weather",
+            "description": "Get the current weather in a given location",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city and state, e.g. San Francisco, CA"
+                },
+                "unit": {
+                  "type": "string",
+                  "description": "Unit for the output - one of (celsius, fahrenheit)"
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "msg_013Zva2CMHLNnXjNJJKqJ2EF",
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hi! My name is Claude. I'm doing well, thank you for asking! How can I help you today?"
+            }
+          ],
+          "model": "claude-sonnet-4-20250514",
+          "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "usage": {
+            "input_tokens": 12,
+            "output_tokens": 25
+          }
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Bad request error (Simple message request)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "role": "user",
+            "content": "Hello, Claude! How are you today?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "Invalid request format"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Bad request error (Message request with system prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "system": "You are a helpful assistant that specializes in explaining complex topics simply.",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Can you explain quantum computing to me?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "Invalid request format"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Bad request error (Message request with tools)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "role": "user",
+            "content": "What's the weather like in San Francisco?"
+          }
+        ],
+        "tools": [
+          {
+            "name": "get_weather",
+            "description": "Get the current weather in a given location",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city and state, e.g. San Francisco, CA"
+                },
+                "unit": {
+                  "type": "string",
+                  "description": "Unit for the output - one of (celsius, fahrenheit)"
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "Invalid request format"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Unauthorized error (Simple message request)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "role": "user",
+            "content": "Hello, Claude! How are you today?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "authentication_error",
+          "message": "Invalid or missing API key"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Unauthorized error (Message request with system prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "system": "You are a helpful assistant that specializes in explaining complex topics simply.",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Can you explain quantum computing to me?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "authentication_error",
+          "message": "Invalid or missing API key"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Unauthorized error (Message request with tools)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "role": "user",
+            "content": "What's the weather like in San Francisco?"
+          }
+        ],
+        "tools": [
+          {
+            "name": "get_weather",
+            "description": "Get the current weather in a given location",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city and state, e.g. San Francisco, CA"
+                },
+                "unit": {
+                  "type": "string",
+                  "description": "Unit for the output - one of (celsius, fahrenheit)"
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 401
+      text: Unauthorized
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "authentication_error",
+          "message": "Invalid or missing API key"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Rate limit error (Simple message request)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "role": "user",
+            "content": "Hello, Claude! How are you today?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 429
+      text: Too Many Requests
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "rate_limit_error",
+          "message": "Rate limit exceeded. Please retry after some time."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Rate limit error (Message request with system prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "system": "You are a helpful assistant that specializes in explaining complex topics simply.",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Can you explain quantum computing to me?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 429
+      text: Too Many Requests
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "rate_limit_error",
+          "message": "Rate limit exceeded. Please retry after some time."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Rate limit error (Message request with tools)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "role": "user",
+            "content": "What's the weather like in San Francisco?"
+          }
+        ],
+        "tools": [
+          {
+            "name": "get_weather",
+            "description": "Get the current weather in a given location",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city and state, e.g. San Francisco, CA"
+                },
+                "unit": {
+                  "type": "string",
+                  "description": "Unit for the output - one of (celsius, fahrenheit)"
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 429
+      text: Too Many Requests
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "rate_limit_error",
+          "message": "Rate limit exceeded. Please retry after some time."
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Server error (Simple message request)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "role": "user",
+            "content": "Hello, Claude! How are you today?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 500
+      text: Internal Server Error
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "api_error",
+          "message": "An internal server error occurred"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Server error (Message request with system prompt)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "system": "You are a helpful assistant that specializes in explaining complex topics simply.",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Can you explain quantum computing to me?"
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 500
+      text: Internal Server Error
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "api_error",
+          "message": "An internal server error occurred"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Server error (Message request with tools)
+  
+  request: {
+    url: {{baseUrl}}/v1/messages
+    method: POST
+    mode: json
+    headers: {
+      anthropic-version: 2023-06-01
+      ~anthropic-beta: BETA_FEATURE_NAME
+      x-api-key: test-key-abc-123
+      Content-Type: application/json
+      ~anthropic-dangerous-direct-browser-access: true
+    }
+  
+    body:json: {
+      {
+        "model": "claude-sonnet-4-20250514",
+        "max_tokens": 1024,
+        "messages": [
+          {
+            "role": "user",
+            "content": "What's the weather like in San Francisco?"
+          }
+        ],
+        "tools": [
+          {
+            "name": "get_weather",
+            "description": "Get the current weather in a given location",
+            "input_schema": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "The city and state, e.g. San Francisco, CA"
+                },
+                "unit": {
+                  "type": "string",
+                  "description": "Unit for the output - one of (celsius, fahrenheit)"
+                }
+              },
+              "required": [
+                "location"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 500
+      text: Internal Server Error
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "api_error",
+          "message": "An internal server error occurred"
+        }
+      '''
+    }
+  }
+}

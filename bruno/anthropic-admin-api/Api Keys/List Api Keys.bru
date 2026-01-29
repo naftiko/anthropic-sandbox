@@ -1,0 +1,126 @@
+meta {
+  name: List Api Keys
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/organizations/api_keys?limit=25&before_id=1&after_id=10&workspace_id=1&status=NEW&created_by_user_id=1
+  body: none
+  auth: inherit
+}
+
+params:query {
+  limit: 25
+  before_id: 1
+  after_id: 10
+  workspace_id: 1
+  status: NEW
+  created_by_user_id: 1
+}
+
+headers {
+  anthropic-version: 2023-06-01
+}
+
+example {
+  name: Api Key List Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/api_keys
+    method: GET
+    mode: none
+    params:query: {
+      ~limit: 25
+      ~before_id: 123
+      ~after_id: 123
+      ~workspace_id: 123
+      ~status: 
+      ~created_by_user_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "data": [
+            {
+              "id": "apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9",
+              "type": "api_key",
+              "name": "Production API Key",
+              "workspace_id": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+              "created_at": "2024-10-30T23:58:27.427722Z",
+              "created_by": {
+                "id": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                "type": "user"
+              },
+              "status": "active",
+              "last_used_at": "2024-11-15T10:30:00.000000Z"
+            }
+          ],
+          "first_id": "apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9",
+          "has_more": false,
+          "last_id": "apikey_01Rj2N8VfPzQ7Lm3KsT6XyW9"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/api_keys
+    method: GET
+    mode: none
+    params:query: {
+      ~limit: 25
+      ~before_id: 123
+      ~after_id: 123
+      ~workspace_id: 123
+      ~status: 
+      ~created_by_user_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The request was invalid or malformed."
+        }
+      '''
+    }
+  }
+}

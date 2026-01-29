@@ -1,0 +1,117 @@
+meta {
+  name: Update Organization Member
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/organizations/users/:user_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  user_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+}
+
+body:json {
+  {
+    "role": "Engineer"
+  }
+}
+
+example {
+  name: Organization Member Response (Update Organization Member Request)
+  
+  request: {
+    url: {{baseUrl}}/organizations/users/:user_id
+    method: POST
+    mode: json
+    params:path: {
+      user_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "role": "developer"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+          "type": "user",
+          "email": "jane.doe@example.com",
+          "name": "Jane Doe",
+          "role": "developer",
+          "added_at": "2024-10-30T23:58:27.427722Z"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response (Update Organization Member Request)
+  
+  request: {
+    url: {{baseUrl}}/organizations/users/:user_id
+    method: POST
+    mode: json
+    params:path: {
+      user_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "role": "developer"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The request was invalid or malformed."
+        }
+      '''
+    }
+  }
+}

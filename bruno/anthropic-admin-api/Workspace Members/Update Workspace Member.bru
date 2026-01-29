@@ -1,0 +1,118 @@
+meta {
+  name: Update Workspace Member
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  workspace_id: 123
+  user_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+}
+
+body:json {
+  {
+    "workspace_role": "Engineer"
+  }
+}
+
+example {
+  name: Workspace Member Response (Update Workspace Member Request)
+  
+  request: {
+    url: {{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id
+    method: POST
+    mode: json
+    params:path: {
+      workspace_id: 123
+      user_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "workspace_role": "workspace_admin"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "workspace_member",
+          "user_id": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+          "workspace_id": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+          "workspace_role": "workspace_developer"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response (Update Workspace Member Request)
+  
+  request: {
+    url: {{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id
+    method: POST
+    mode: json
+    params:path: {
+      workspace_id: 123
+      user_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  
+    body:json: {
+      {
+        "workspace_role": "workspace_admin"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The request was invalid or malformed."
+        }
+      '''
+    }
+  }
+}

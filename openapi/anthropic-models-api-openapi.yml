@@ -39,9 +39,9 @@ paths:
       tags:
         - Models
       x-microcks-operation:
-        dispatcher: FALLBACK
-        dispatcherRules: ''
-        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: |
+          return "ListModelsSuccessExample"
       parameters:
         - $ref: '#/components/parameters/AnthropicVersionHeader'
         - $ref: '#/components/parameters/AnthropicBetaHeader'
@@ -124,14 +124,13 @@ paths:
       tags:
         - Models
       x-microcks-operation:
-        dispatcher: FALLBACK
-        dispatcherRules: ''
-        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: |
+          return "GetModelSuccessExample"
       parameters:
         - $ref: '#/components/parameters/ModelIdPath'
         - $ref: '#/components/parameters/AnthropicVersionHeader'
         - $ref: '#/components/parameters/AnthropicBetaHeader'
-        - $ref: '#/components/parameters/ApiKeyHeader'
         - $ref: '#/components/parameters/ContentTypeHeader'
         - $ref: '#/components/parameters/BrowserAccessHeader'
       responses:
@@ -211,9 +210,9 @@ paths:
       tags:
         - Messages
       x-microcks-operation:
-        dispatcher: FALLBACK
-        dispatcherRules: ''
-        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: |
+          return "MessageSuccessExample"
       parameters:
         - $ref: '#/components/parameters/AnthropicVersionHeader'
         - $ref: '#/components/parameters/AnthropicBetaHeader'
@@ -305,9 +304,9 @@ paths:
       tags:
         - Tokens
       x-microcks-operation:
-        dispatcher: FALLBACK
-        dispatcherRules: ''
-        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: |
+          return "CountTokensSuccessExample"
       parameters:
         - $ref: '#/components/parameters/AnthropicVersionHeader'
         - $ref: '#/components/parameters/AnthropicBetaHeader'
@@ -321,7 +320,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CountTokensRequest'
             examples:
-              CountTokensExample:
+              CountTokensSuccessExample:
                 $ref: '#/components/examples/CountTokensRequestExample'
       responses:
         '200':

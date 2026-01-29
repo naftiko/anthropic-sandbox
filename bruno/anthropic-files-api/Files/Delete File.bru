@@ -1,0 +1,98 @@
+meta {
+  name: Delete File
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/files/:file_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  file_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+  anthropic-beta: BETA_FEATURE_NAME
+}
+
+example {
+  name: File Deleted Response
+  
+  request: {
+    url: {{baseUrl}}/files/:file_id
+    method: DELETE
+    mode: none
+    params:path: {
+      file_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      anthropic-beta: BETA_FEATURE_NAME
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "id": "file_011CNha8iCJcU1wXNR6q4V8w",
+          "type": "file_deleted"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/files/:file_id
+    method: DELETE
+    mode: none
+    params:path: {
+      file_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+      anthropic-beta: BETA_FEATURE_NAME
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "not_found_error",
+          "message": "The requested file could not be found."
+        }
+      '''
+    }
+  }
+}

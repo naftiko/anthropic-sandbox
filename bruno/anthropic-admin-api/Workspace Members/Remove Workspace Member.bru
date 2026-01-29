@@ -1,0 +1,99 @@
+meta {
+  name: Remove Workspace Member
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  workspace_id: 123
+  user_id: 123
+}
+
+headers {
+  anthropic-version: 2023-06-01
+}
+
+example {
+  name: Workspace Member Deleted Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id
+    method: DELETE
+    mode: none
+    params:path: {
+      workspace_id: 123
+      user_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "workspace_member_deleted",
+          "user_id": "user_01WCz1FkmYMm4gnmykNKUu3Q",
+          "workspace_id": "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        }
+      '''
+    }
+  }
+}
+
+example {
+  name: Error Response
+  
+  request: {
+    url: {{baseUrl}}/organizations/workspaces/:workspace_id/members/:user_id
+    method: DELETE
+    mode: none
+    params:path: {
+      workspace_id: 123
+      user_id: 123
+    }
+  
+    headers: {
+      anthropic-version: 2023-06-01
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 4XX
+      text: Unknown
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "type": "invalid_request_error",
+          "message": "The request was invalid or malformed."
+        }
+      '''
+    }
+  }
+}
