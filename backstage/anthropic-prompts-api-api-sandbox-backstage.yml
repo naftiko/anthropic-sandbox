@@ -51,6 +51,8 @@ spec:
     servers:
       - url: https://api.anthropic.com
         description: Production Server
+      - url: http://localhost:8080/rest/anthropic-prompt-tools-api/1.0.0
+        description: Sandbox
     security:
       - ApiKeyAuth: []
     tags:

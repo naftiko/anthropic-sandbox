@@ -16,6 +16,8 @@ info:
 servers:
   - url: https://api.anthropic.com
     description: Production Server
+  - url: http://localhost:8080/rest/anthropic-models-api/2025-03-05
+    description: Sandbox
 security:
   - ApiKeyAuth: []
 tags:

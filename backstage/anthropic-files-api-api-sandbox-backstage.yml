@@ -44,6 +44,8 @@ spec:
     servers:
       - url: https://api.anthropic.com/v1
         description: Production Server
+      - url: http://localhost:8080/rest/anthropic-files-api/1.0.0
+        description: Sandbox
     security:
       - ApiKeyAuth: []
     tags:
