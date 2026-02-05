@@ -1,9 +1,6 @@
 # Anthropic API & MCP Sandbox
 This is an API sandbox for the Anthropic API & MCP Sandbox, using an OpenAPI specification with examples, Microcks and Bruno as the sandbox interface, and this GitHub repository as the vehicle for delivering a localized sandbox.
 
-## Capability-Driven
-This sandbox is capability-driven, using an early [prototype of the Naftiko capability schema as the manifest](capability-anthropic-sandbox.yml). The manifest provides the mapping to the OpenAPI source for the sandbox and guides the evolution of the sandbox, aligning with business outcomes—something we will keep iterating upon.
-
 ## OpenAPI
 This sandbox uses OpenAPI as the definition, providing [a complete definition of all available paths for the Anthropic API & MCP Sandbox. The OpenAPI for this sandnbox uses examples and Microcks extensions to mock the requests and responses for each API operation, something we will iterate and expand upon with richer examples as we move forward.
 
