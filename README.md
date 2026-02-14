@@ -1,6 +1,9 @@
 # Anthropic API & MCP Sandbox
 This is an API sandbox for the Anthropic API & MCP Sandbox, using an OpenAPI specification with examples, Microcks and Bruno as the sandbox interface, and this GitHub repository as the vehicle for delivering a localized sandbox.
 
+## APIs.json
+There is an APIs.yml file in the root of this repository, providing an index of all the artifacts used as part of this API sandbox, providing a machine-readable way to read, manage, and execute the sandbox available here.
+
 ## OpenAPI
 This sandbox uses OpenAPI as the definition, providing [a complete definition of all available paths for the Anthropic API & MCP Sandbox. The OpenAPI for this sandnbox uses examples and Microcks extensions to mock the requests and responses for each API operation, something we will iterate and expand upon with richer examples as we move forward.
 

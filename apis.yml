@@ -1,0 +1,286 @@
+specificationVersion: '0.19'
+
+aid: anthropic-sandbox
+type: Sandbox
+visibility: Public
+
+name: Anthropic API & MCP Sandbox
+description: >-
+  This is an Anthropic sandbox that uses OpenAPI, Microcks, Bruno, and
+  Backstage to provide a 3rd-party REST API and MCP sandbox for Anthropic.
+
+tags:
+  - Artificial Intelligence
+  - AI
+  - Models
+
+image: https://naftiko.s3.us-east-1.amazonaws.com/naftiko-logo-blue-icon.png
+
+created: '2026-02-13'
+modified: '2026-02-13'
+
+url: https://github.com/naftiko/anthropic-sandbox/blob/main/README.md
+
+apis:
+
+    - aid: anthropic:admin-api
+      name: Anthropic Administrative API
+      description: >-
+        Manage administrative functions for Anthropic organizations, workspaces,
+        users, invites, and API keys.
+      tags:
+        - Administrative
+        - Organizations
+        - Workspaces
+        - Api Keys
+      properties:
+
+        - type: OpenApi
+          url: openapi/anthropic-admin-api-openapi.yml
+        - type: MockRestServer
+          url: http://localhost:8080/rest/anthropic-admin-api/1.0.0
+        - type: MockMCPServer
+          url: http://localhost:8080/rest/anthropic-admin-api/1.0.0/sse
+        - type: BackstageApi
+          url: backstage/anthropic-admin-api-api-sandbox-backstage.yml
+
+    - aid: anthropic:files-api
+      name: Anthropic Files API
+      description: >-
+        The Files API allows you to upload and manage files to use with the
+        Anthropic API without having to re-upload content with each request.
+        Upload documents, images, and other supported file types for use in
+        message creation and batch processing.
+      tags:
+        - Files
+        - Documents
+        - Storage
+      properties:
+
+        - type: OpenApi
+          url: openapi/anthropic-files-api-openapi.yml
+        - type: MockRestServer
+          url: http://localhost:8080/rest/anthropic-files-api/1.0.0
+        - type: MockMCPServer
+          url: http://localhost:8080/rest/anthropic-files-api/1.0.0/sse
+        - type: BackstageApi
+          url: backstage/anthropic-files-api-api-sandbox-backstage.yml
+
+    - aid: anthropic:message-batches-api
+      name: Anthropic Message Batches API
+      description: >-
+        Send a batch of Message creation requests. The Message Batches API can
+        be used to process multiple Messages API requests at once. Once a
+        Message Batch is created, it begins processing immediately. Batches can
+        take up to 24 hours to complete.
+      tags:
+        - Message Batches
+        - Messages
+        - Batch Processing
+      properties:
+
+        - type: OpenApi
+          url: openapi/anthropic-message-batches-api-openapi.yml
+        - type: MockRestServer
+          url: http://localhost:8080/rest/anthropic-message-batches-api/1.0.0
+        - type: MockMCPServer
+          url: http://localhost:8080/rest/anthropic-message-batches-api/1.0.0/sse
+        - type: BackstageApi
+          url: backstage/anthropic-message-batches-api-api-sandbox-backstage.yml
+
+    - aid: anthropic:messages-api
+      name: Anthropic Messages API
+      description: >-
+        Send a structured list of input messages with text and/or image content,
+        and the model will generate the next message in the conversation. The
+        Messages API is the primary interface for interacting with Claude models,
+        supporting multi-turn conversations and content generation.
+      tags:
+        - Messages
+        - Conversations
+        - Content Generation
+      properties:
+
+        - type: OpenApi
+          url: openapi/anthropic-messages-api-openapi.yml
+        - type: MockRestServer
+          url: http://localhost:8080/rest/anthropic-messages-api/1.0.0
+        - type: MockMCPServer
+          url: http://localhost:8080/rest/anthropic-messages-api/1.0.0/sse
+        - type: BackstageApi
+          url: backstage/anthropic-messages-api-api-sandbox-backstage.yml
+
+    - aid: anthropic:models-api
+      name: Anthropic Models API
+      description: >-
+        List available Claude models and retrieve model details including
+        capabilities, context windows, and supported features. The Models API
+        provides programmatic access to discover and inspect available models.
+      tags:
+        - Models
+        - Discovery
+      properties:
+
+        - type: OpenApi
+          url: openapi/anthropic-models-api-openapi.yml
+        - type: MockRestServer
+          url: http://localhost:8080/rest/anthropic-models-api/1.0.0
+        - type: MockMCPServer
+          url: http://localhost:8080/rest/anthropic-models-api/1.0.0/sse
+        - type: BackstageApi
+          url: backstage/anthropic-models-api-api-sandbox-backstage.yml
+
+    - aid: anthropic:prompt-tools-api
+      name: Anthropic Prompt Tools API
+      description: >-
+        Manage prompts with generation, improvement, and templatization
+        capabilities. The Prompt Tools APIs are in a closed research preview.
+        These APIs are a set of tools to generate and improve prompts, similar
+        to what is available in the Anthropic Workbench, and are intended for
+        use by other prompt engineering platforms and playgrounds.
+      tags:
+        - Prompt Engineering
+        - Prompt Generation
+        - Prompt Improvement
+        - Prompt Templatization
+      properties:
+
+        - type: OpenApi
+          url: openapi/anthropic-prompts-api-openapi.yml
+        - type: MockRestServer
+          url: http://localhost:8080/rest/anthropic-prompt-tools-api/1.0.0
+        - type: MockMCPServer
+          url: http://localhost:8080/rest/anthropic-prompt-tools-api/1.0.0/sse
+        - type: BackstageApi
+          url: backstage/anthropic-prompts-api-api-sandbox-backstage.yml
+
+common:
+
+  - type: Summary
+    data:
+      numberOfPaths: 29
+      numberOfOperations: 43
+      numberOfReadOperations: 19
+      numberOfWriteOperations: 24
+      numberOfSchemas: 106
+      numberOfResponses: 3
+      numberOfParameters: 39
+      numberOfExamples: 76
+      numberOfRequestBodies: 0
+      numberOfHeaders: 7
+      tags:
+        - Api Keys
+        - Files
+        - Message Batches
+        - Messages
+        - Models
+        - Organization
+        - Organization Invites
+        - Organization Members
+        - Prompt Generation
+        - Prompt Improvement
+        - Prompt Templatization
+        - Tokens
+        - Workspace Members
+        - Workspaces
+      operations:
+        - Add Workspace Member
+        - Archive Workspace
+        - Cancel Message Batch
+        - Count Tokens In A Message
+        - Create A Message
+        - Create File
+        - Create Message Batch
+        - Create Organization Invite
+        - Create Workspace
+        - Delete File
+        - Delete Message Batch
+        - Delete Organization Invite
+        - Download File Content
+        - Generate A Prompt
+        - Get A Specific Model
+        - Get Api Key
+        - Get Current Organization
+        - Get File Metadata
+        - Get Organization Invite
+        - Get Organization Member
+        - Get Workspace
+        - Get Workspace Member
+        - Improve A Prompt
+        - List Api Keys
+        - List Available Models
+        - List Files
+        - List Message Batches
+        - List Organization Invites
+        - List Organization Members
+        - List Workspace Members
+        - List Workspaces
+        - Remove Organization Member
+        - Remove Workspace Member
+        - Retrieve Message Batch
+        - Retrieve Message Batch Results
+        - Templatize A Prompt
+        - Update Api Key
+        - Update Organization Member
+        - Update Workspace
+        - Update Workspace Member
+
+  - type: GitHubHttpUrl
+    url: https://github.com/naftiko/anthropic-sandbox
+
+  - type: GitHubSshUrl
+    url: git@github.com:naftiko/anthropic-sandbox.git
+
+  - type: GitHubIssues
+    url: https://github.com/naftiko/anthropic-sandbox/issues
+
+  - type: GitHubDiscussions
+    url: https://github.com/orgs/naftiko/discussions
+
+  - type: Standards
+    data:
+
+      - name: APIs.json
+        description: This uses the APIs.json
+        docUrl: http://apisjson.org/
+
+      - name: OpenAPI
+        description: This uses OpenAPI to define access to all HTTP APIs.
+        docUrl: https://spec.openapis.org/oas/latest.html
+
+      - name: JSON Schema
+        description: This uses JSON Schema to define and validate all entities used.
+        docUrl: https://json-schema.org/specification
+
+      - name: Model Context Protocol
+        description: This uses MCP expressed as JSON schema to define each MCP server.
+        docUrl: https://modelcontextprotocol.io/
+
+      - name: Bruno Collections
+        description: This uses Bruno Collections to define each executable HTTP API integration.
+        docUrl: https://docs.usebruno.com/
+
+      - name: Bruno Environments
+        description: This uses Bruno Environments to store keys for each API to use in automation.
+        docUrl: https://docs.usebruno.com/secrets-management/overview
+
+      - name: API Commons
+        description: This uses an API Commons schema to define the plans and rate limits.
+        docUrl: https://apicommons.org/
+
+  - type: Services
+    data:
+
+    - aid: anthropic
+      name: Anthropic
+      description: >-
+        Anthropic is an AI safety company founded in 2021 that builds Claude, a family of AI assistants designed to be helpful, harmless, and honest.
+      docUrl: https://platform.claude.com/
+      apisJson: >-
+        https://raw.githubusercontent.com/api-evangelist/anthropic/refs/heads/main/apis.yml
+      loginUrl: https://console.anthropic.com/login
+
+maintainers:
+
+  - FN: Kin Lane
+    email: kinlane@naftiko.io
