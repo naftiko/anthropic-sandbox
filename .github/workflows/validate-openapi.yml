@@ -1,0 +1,34 @@
+name: Validate OpenAPI Files
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  validate-openapi:
+    name: Validate OpenAPI Files
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      statuses: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run SuperLinter - OpenAPI Validation
+        uses: super-linter/super-linter@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: main
+          VALIDATE_ALL_CODEBASE: true
+          FILTER_REGEX_INCLUDE: openapi/.*\.(yml|yaml|json)$
+          VALIDATE_OPENAPI: true
+          LINTER_RULES_PATH: .github/linters
