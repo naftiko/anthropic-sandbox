@@ -1,116 +1,82 @@
-# Anthropic API & MCP Sandbox
-This is an API sandbox for the Anthropic API & MCP Sandbox, using an OpenAPI specification with examples, Microcks and Bruno as the sandbox interface, and this GitHub repository as the vehicle for delivering a localized sandbox.
+# Anthropic Sandbox
+This is sandbox for the Anthropic Sandbox API, using an OpenAPI specification with examples, Microcks and Bruno as the sandbox interface, and this GitHub repository as the vehicle for delivering as a localized sandbox, or also enabling the working directly with production APIs.
 
-## APIs.json
-There is an APIs.yml file in the root of this repository, providing an index of all the artifacts used as part of this API sandbox, providing a machine-readable way to read, manage, and execute the sandbox available here.
+## APIs.json Index
+There is an APIs.yml file in the root of this repository, providing an index of all the artifacts used as part of this capability, providing a machine-readable way to read, manage, and execute the resources available here.
 
 ## OpenAPI
-This sandbox uses OpenAPI as the definition, providing [a complete definition of all available paths for the Anthropic API & MCP Sandbox. The OpenAPI for this sandnbox uses examples and Microcks extensions to mock the requests and responses for each API operation, something we will iterate and expand upon with richer examples as we move forward.
+This capability uses OpenAPI as the definition, providing a complete definition of all available paths for the Anthropic Sandbox. The OpenAPI for this capability uses examples and Microcks extensions to mock the requests and responses for each API operation, something we will iterate and expand upon with richer examples as the capability evolves.
 
 ## Microcks
-This sandbox uses Microcks to deliver the mock API. [You just install Microcks, with the Docker extension being the easiest](https://microcks.io/documentation/guides/installation/docker-desktop-extension/), [import the OpenAPI as a service](openapi/notion-openapi.yml), and you have a mocked API for all APIs, available via REST and MCP APIs--providing a multi-protocol sandbox.
+This capability uses Microcks to deliver the mock API. [You just install Microcks, with the Docker extension being the easiest](https://microcks.io/documentation/guides/installation/docker-desktop-extension/), [import the OpenAPI as a service](openapi/notion-openapi.yml), and you have a mocked API for all APIs, available via REST and MCP APIs--providing a multi-protocol sandbox.
 
 ## Bruno
-This sandbox [uses Bruno as the client](https://www.usebruno.com/), leveraging Bruno Collections pre-generated from the OpenAPI and Bruno environments that uses the localhost and port of Microcks to work with the mocked API. You just have to install Microcks, then open the collection provided in this repository, select the available environment, and begin calling the Anthropic API & MCP Sandbox via the sandbox.
+This capability [uses Bruno as the client](https://www.usebruno.com/), leveraging Bruno Collections pre-generated from the OpenAPI and Bruno environments that uses the localhost and port of Microcks to work with the mocked API. You just have to install Microcks, then open the collection provided in this repository, select the available environments, and begin calling the Anthropic Sandbox via the sandbox or production.
 
-## Summary
-This is a summary of this sandbox, breaking down the available paths, operations, and other relevant detail regarding the scope of this sandbox, designed to support development and testing against the Anthropic API & MCP Sandbox.
-
-- Number of Paths: 29
-- Number of Operations: 43
-- Number of Read Operations: 19
-- Number of Write Operations: 24
-- Number of Schemas: 106
-- Number of Responses: 3
-- Number of Parameters: 39
-- Number of Examples: 76
-- Number of Request Bodies: 0
-- Number of Headers: 7
 
 ## OpenAPIs
-These are the OpenAPIs available for the Anthropic API & MCP Sandbox, which are made available via this sandbox API, which can be imported into Microcks and deployed as a sandbox using their mock feature.
+These are the OpenAPIs available for the Anthropic Sandbox, which are made available via this sandbox API, which can be imported into Microcks and deployed as a sandbox using their mock feature.
 
-  - [Anthropic Admin API](openapi/anthropic-admin-api-openapi.yml)
-  - [Anthropic Files API](openapi/anthropic-files-api-openapi.yml)
-  - [Anthropic Message Batches API](openapi/anthropic-message-batches-api-openapi.yml)
-  - [Anthropic Prompt Tools API](openapi/anthropic-messages-api-openapi.yml)
-  - [Anthropic Models API](openapi/anthropic-models-api-openapi.yml)
-  - [Anthropic Prompt Tools API](openapi/anthropic-prompts-api-openapi.yml)
+  - [Anthropic Admin Api Openapi](openapi/anthropic-admin-api-openapi.yml)
+  - [Anthropic Files Api Openapi](openapi/anthropic-files-api-openapi.yml)
+  - [Anthropic Message Batches Api Openapi](openapi/anthropic-message-batches-api-openapi.yml)
+  - [Anthropic Messages Api Openapi](openapi/anthropic-messages-api-openapi.yml)
+  - [Anthropic Models Api Openapi](openapi/anthropic-models-api-openapi.yml)
+  - [Anthropic Prompts Api Openapi](openapi/anthropic-prompts-api-openapi.yml)
 
-## Resources
-These are the resources available via the Anthropic API & MCP Sandbox, which are made available via this sandbox API, which are applied as tags to each operation in the OpenAPI.
+## Skills
+Each API operation has a dedicated SKILL.md file providing Claude with structured instructions for using that operation, including endpoints, parameters, example requests, and usage guidance. Skills are organized in the `skills/` directory with one subfolder per operation.
 
-  - Api Keys
-  - Files
-  - Message Batches
-  - Messages
-  - Models
-  - Organization
-  - Organization Invites
-  - Organization Members
-  - Prompt Generation
-  - Prompt Improvement
-  - Prompt Templatization
-  - Tokens
-  - Workspace Members
-  - Workspaces
+### Administrative API Skills
+  - [Get Current Organization](skills/get-current-organization/SKILL.md)
+  - [List Organization Members](skills/list-organization-members/SKILL.md)
+  - [Get Organization Member](skills/get-organization-member/SKILL.md)
+  - [Update Organization Member](skills/update-organization-member/SKILL.md)
+  - [Remove Organization Member](skills/remove-organization-member/SKILL.md)
+  - [List Organization Invites](skills/list-organization-invites/SKILL.md)
+  - [Create Organization Invite](skills/create-organization-invite/SKILL.md)
+  - [Get Organization Invite](skills/get-organization-invite/SKILL.md)
+  - [Delete Organization Invite](skills/delete-organization-invite/SKILL.md)
+  - [List Workspaces](skills/list-workspaces/SKILL.md)
+  - [Create Workspace](skills/create-workspace/SKILL.md)
+  - [Get Workspace](skills/get-workspace/SKILL.md)
+  - [Update Workspace](skills/update-workspace/SKILL.md)
+  - [Archive Workspace](skills/archive-workspace/SKILL.md)
+  - [List Workspace Members](skills/list-workspace-members/SKILL.md)
+  - [Add Workspace Member](skills/add-workspace-member/SKILL.md)
+  - [Get Workspace Member](skills/get-workspace-member/SKILL.md)
+  - [Update Workspace Member](skills/update-workspace-member/SKILL.md)
+  - [Remove Workspace Member](skills/remove-workspace-member/SKILL.md)
+  - [List API Keys](skills/list-api-keys/SKILL.md)
+  - [Get API Key](skills/get-api-key/SKILL.md)
+  - [Update API Key](skills/update-api-key/SKILL.md)
 
-## Operations
-These are all of the available operations in this sandbox, providing a complete view of what you can do within this sandbox using the mocked Anthropic API & MCP Sandbox.
+### Files API Skills
+  - [List Files](skills/list-files/SKILL.md)
+  - [Create File](skills/create-file/SKILL.md)
+  - [Get File Metadata](skills/get-file-metadata/SKILL.md)
+  - [Delete File](skills/delete-file/SKILL.md)
+  - [Download File Content](skills/download-file-content/SKILL.md)
 
-  - Add Workspace Member
-  - Archive Workspace
-  - Cancel Message Batch
-  - Count Tokens In A Message
-  - Create A Message
-  - Create File
-  - Create Message Batch
-  - Create Organization Invite
-  - Create Workspace
-  - Delete File
-  - Delete Message Batch
-  - Delete Organization Invite
-  - Download File Content
-  - Generate A Prompt
-  - Generate A Prompt
-  - Get A Specific Model
-  - Get Api Key
-  - Get Current Organization
-  - Get File Metadata
-  - Get Organization Invite
-  - Get Organization Member
-  - Get Workspace
-  - Get Workspace Member
-  - Improve A Prompt
-  - Improve A Prompt
-  - List Api Keys
-  - List Available Models
-  - List Files
-  - List Message Batches
-  - List Organization Invites
-  - List Organization Members
-  - List Workspace Members
-  - List Workspaces
-  - Remove Organization Member
-  - Remove Workspace Member
-  - Retrieve Message Batch
-  - Retrieve Message Batch Results
-  - Templatize A Prompt
-  - Templatize A Prompt
-  - Update Api Key
-  - Update Organization Member
-  - Update Workspace
-  - Update Workspace Member
+### Message Batches API Skills
+  - [List Message Batches](skills/list-message-batches/SKILL.md)
+  - [Create Message Batch](skills/create-message-batch/SKILL.md)
+  - [Retrieve Message Batch](skills/retrieve-message-batch/SKILL.md)
+  - [Delete Message Batch](skills/delete-message-batch/SKILL.md)
+  - [Retrieve Message Batch Results](skills/retrieve-message-batch-results/SKILL.md)
+  - [Cancel Message Batch](skills/cancel-message-batch/SKILL.md)
 
-## Backstage
-We provide a Backstage software catalog entity for the Anthropic API & MCP Sandbox, allowing this sandbox to be registered with any catalog, making it discoverable by team and across an organization--allowing anyone to fork and deploy locally within the enterprise.
+### Messages & Models API Skills
+  - [List Available Models](skills/list-available-models/SKILL.md)
+  - [Get A Specific Model](skills/get-a-specific-model/SKILL.md)
+  - [Create A Message](skills/create-a-message/SKILL.md)
+  - [Count Tokens In A Message](skills/count-tokens-in-a-message/SKILL.md)
 
-  - [Anthropic Admin API](backstage/anthropic-admin-api-api-sandbox-backstage.yml)
-  - [Anthropic Files API](backstage/anthropic-files-api-api-sandbox-backstage.yml)
-  - [Anthropic Message Batches API](backstage/anthropic-message-batches-api-api-sandbox-backstage.yml)
-  - [Anthropic Prompt Tools API](backstage/anthropic-messages-api-api-sandbox-backstage.yml)
-  - [Anthropic Models API](backstage/anthropic-models-api-api-sandbox-backstage.yml)
-  - [Anthropic Prompt Tools API](backstage/anthropic-prompts-api-api-sandbox-backstage.yml)
+### Prompt Tools API Skills
+  - [Generate A Prompt](skills/generate-a-prompt/SKILL.md)
+  - [Improve A Prompt](skills/improve-a-prompt/SKILL.md)
+  - [Templatize A Prompt](skills/templatize-a-prompt/SKILL.md)
+
 ## Support
-Please provide any questions or feedback via GitHub issues, or just email kinlane@naftiko.io with feedback. The goal is to keep iterating upon this sandbox using existing OpenAPI, Microcks, and Bruno features, offering value out of the box via this forkable third-party Anthropic API & MCP Sandbox.
+Please provide any questions or feedback via GitHub issues, or just email kinlane@naftiko.io with feedback. The goal is to keep iterating upon this sandboxes using existing OpenAPI, Microcks, and Bruno features, offering value out of the box via this forkable capability.
 

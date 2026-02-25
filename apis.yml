@@ -225,6 +225,89 @@ common:
         - Update Workspace
         - Update Workspace Member
 
+  - type: Skills
+    data:
+      - name: Get Current Organization
+        url: skills/get-current-organization/SKILL.md
+      - name: List Organization Members
+        url: skills/list-organization-members/SKILL.md
+      - name: Get Organization Member
+        url: skills/get-organization-member/SKILL.md
+      - name: Update Organization Member
+        url: skills/update-organization-member/SKILL.md
+      - name: Remove Organization Member
+        url: skills/remove-organization-member/SKILL.md
+      - name: List Organization Invites
+        url: skills/list-organization-invites/SKILL.md
+      - name: Create Organization Invite
+        url: skills/create-organization-invite/SKILL.md
+      - name: Get Organization Invite
+        url: skills/get-organization-invite/SKILL.md
+      - name: Delete Organization Invite
+        url: skills/delete-organization-invite/SKILL.md
+      - name: List Workspaces
+        url: skills/list-workspaces/SKILL.md
+      - name: Create Workspace
+        url: skills/create-workspace/SKILL.md
+      - name: Get Workspace
+        url: skills/get-workspace/SKILL.md
+      - name: Update Workspace
+        url: skills/update-workspace/SKILL.md
+      - name: Archive Workspace
+        url: skills/archive-workspace/SKILL.md
+      - name: List Workspace Members
+        url: skills/list-workspace-members/SKILL.md
+      - name: Add Workspace Member
+        url: skills/add-workspace-member/SKILL.md
+      - name: Get Workspace Member
+        url: skills/get-workspace-member/SKILL.md
+      - name: Update Workspace Member
+        url: skills/update-workspace-member/SKILL.md
+      - name: Remove Workspace Member
+        url: skills/remove-workspace-member/SKILL.md
+      - name: List Api Keys
+        url: skills/list-api-keys/SKILL.md
+      - name: Get Api Key
+        url: skills/get-api-key/SKILL.md
+      - name: Update Api Key
+        url: skills/update-api-key/SKILL.md
+      - name: List Files
+        url: skills/list-files/SKILL.md
+      - name: Create File
+        url: skills/create-file/SKILL.md
+      - name: Get File Metadata
+        url: skills/get-file-metadata/SKILL.md
+      - name: Delete File
+        url: skills/delete-file/SKILL.md
+      - name: Download File Content
+        url: skills/download-file-content/SKILL.md
+      - name: List Message Batches
+        url: skills/list-message-batches/SKILL.md
+      - name: Create Message Batch
+        url: skills/create-message-batch/SKILL.md
+      - name: Retrieve Message Batch
+        url: skills/retrieve-message-batch/SKILL.md
+      - name: Delete Message Batch
+        url: skills/delete-message-batch/SKILL.md
+      - name: Retrieve Message Batch Results
+        url: skills/retrieve-message-batch-results/SKILL.md
+      - name: Cancel Message Batch
+        url: skills/cancel-message-batch/SKILL.md
+      - name: List Available Models
+        url: skills/list-available-models/SKILL.md
+      - name: Get A Specific Model
+        url: skills/get-a-specific-model/SKILL.md
+      - name: Create A Message
+        url: skills/create-a-message/SKILL.md
+      - name: Count Tokens In A Message
+        url: skills/count-tokens-in-a-message/SKILL.md
+      - name: Generate A Prompt
+        url: skills/generate-a-prompt/SKILL.md
+      - name: Improve A Prompt
+        url: skills/improve-a-prompt/SKILL.md
+      - name: Templatize A Prompt
+        url: skills/templatize-a-prompt/SKILL.md
+
   - type: GitHubHttpUrl
     url: https://github.com/naftiko/anthropic-sandbox
 
