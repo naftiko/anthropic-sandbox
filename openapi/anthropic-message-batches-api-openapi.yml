@@ -279,8 +279,6 @@ components:
         type: array
         items:
           type: string
-      style: form
-      explode: false
     Limit:
       name: limit
       in: query

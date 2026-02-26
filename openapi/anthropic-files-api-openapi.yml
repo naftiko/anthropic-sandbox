@@ -222,8 +222,6 @@ components:
           type: string
           enum:
             - files-api-2025-04-14
-      style: form
-      explode: false
       example:
         - files-api-2025-04-14
     Limit:
