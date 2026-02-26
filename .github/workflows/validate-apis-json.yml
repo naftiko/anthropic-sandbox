@@ -1,0 +1,41 @@
+name: Validate APIs.json File
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  validate-apis-json:
+    name: Validate APIs.json File
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      statuses: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run SuperLinter - APIs.json YAML Syntax
+        uses: super-linter/super-linter@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: main
+          VALIDATE_ALL_CODEBASE: true
+          FILTER_REGEX_INCLUDE: apis\.yml$
+          VALIDATE_YAML: true
+          LINTER_RULES_PATH: .github/linters
+
+      - name: Validate APIs.json Schema (0.20)
+        run: |
+          pip install check-jsonschema
+          check-jsonschema \
+            --schema https://raw.githubusercontent.com/apis-json/api-json/refs/heads/develop/spec/schema_0.20.yml \
+            apis.yml
