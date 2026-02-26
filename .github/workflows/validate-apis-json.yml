@@ -37,5 +37,5 @@ jobs:
         run: |
           pip install check-jsonschema
           check-jsonschema \
-            --schema https://raw.githubusercontent.com/apis-json/api-json/refs/heads/develop/spec/schema_0.20.yml \
+            --schemafile https://raw.githubusercontent.com/apis-json/api-json/refs/heads/develop/spec/schema_0.20.yml \
             apis.yml
