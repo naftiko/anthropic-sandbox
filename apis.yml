@@ -14,7 +14,7 @@ tags:
   - AI
   - Models
 
-image: https://naftiko.s3.us-east-1.amazonaws.com/naftiko-logo-blue-icon.png
+image: https://naftiko.github.io/docs/images/monogram/monogram_full_color_512.png
 
 created: '2026-02-13'
 modified: '2026-02-13'  
@@ -28,8 +28,8 @@ apis:
       description: >-
         Manage administrative functions for Anthropic organizations, workspaces,
         users, invites, and API keys.
-      humanURL: https://github.com/naftiko/anthropic-sandbox/blob/main/openapi/anthropic-admin-api-openapi.yml
-      baseURL: http://localhost:8080/rest/anthropic-admin-api/1.0.0
+      humanURL: https://github.com/naftiko/anthropic-sandbox
+      baseURL: http://localhost:8080/rest/anthropic-sandbox/1.0.0
       image: https://naftiko.github.io/docs/images/monogram/monogram_full_color_512.png
       tags:
         - Administrative
@@ -54,8 +54,8 @@ apis:
         Anthropic API without having to re-upload content with each request.
         Upload documents, images, and other supported file types for use in
         message creation and batch processing.
-      humanURL: https://github.com/naftiko/anthropic-sandbox/blob/main/openapi/anthropic-files-api-openapi.yml
-      baseURL: http://localhost:8080/rest/anthropic-admin-api/1.0.0        
+      humanURL: https://github.com/naftiko/anthropic-sandbox
+      baseURL: http://localhost:8080/rest/anthropic-sandbox/1.0.0
       image: https://naftiko.github.io/docs/images/monogram/monogram_full_color_512.png
       tags:
         - Files
@@ -79,9 +79,9 @@ apis:
         be used to process multiple Messages API requests at once. Once a
         Message Batch is created, it begins processing immediately. Batches can
         take up to 24 hours to complete.
-      humanURL: https://github.com/naftiko/anthropic-sandbox/blob/main/openapi/anthropic-message-batches-api-openapi.yml
-      baseURL: http://localhost:8080/rest/anthropic-admin-api/1.0.0  
-      image: https://naftiko.github.io/docs/images/monogram/monogram_full_color_512.png         
+      humanURL: https://github.com/naftiko/anthropic-sandbox
+      baseURL: http://localhost:8080/rest/anthropic-sandbox/1.0.0
+      image: https://naftiko.github.io/docs/images/monogram/monogram_full_color_512.png
       tags:
         - Message Batches
         - Messages
@@ -104,9 +104,9 @@ apis:
         and the model will generate the next message in the conversation. The
         Messages API is the primary interface for interacting with Claude models,
         supporting multi-turn conversations and content generation.
-      humanURL: https://github.com/naftiko/anthropic-sandbox/blob/main/openapi/anthropic-messages-api-openapi.yml
-      baseURL: http://localhost:8080/rest/anthropic-messages-api/1.0.0         
-      image: https://naftiko.github.io/docs/images/monogram/monogram_full_color_512.png 
+      humanURL: https://github.com/naftiko/anthropic-sandbox
+      baseURL: http://localhost:8080/rest/anthropic-sandbox/1.0.0
+      image: https://naftiko.github.io/docs/images/monogram/monogram_full_color_512.png
       tags:
         - Messages
         - Conversations
@@ -128,9 +128,9 @@ apis:
         List available Claude models and retrieve model details including
         capabilities, context windows, and supported features. The Models API
         provides programmatic access to discover and inspect available models.
-      humanURL: https://github.com/naftiko/anthropic-sandbox/blob/main/openapi/anthropic-models-api-openapi.yml
-      baseURL: http://localhost:8080/rest/anthropic-models-api/1.0.0  
-      image: https://naftiko.github.io/docs/images/monogram/monogram_full_color_512.png         
+      humanURL: https://github.com/naftiko/anthropic-sandbox
+      baseURL: http://localhost:8080/rest/anthropic-sandbox/1.0.0
+      image: https://naftiko.github.io/docs/images/monogram/monogram_full_color_512.png
       tags:
         - Models
         - Discovery
@@ -153,9 +153,9 @@ apis:
         These APIs are a set of tools to generate and improve prompts, similar
         to what is available in the Anthropic Workbench, and are intended for
         use by other prompt engineering platforms and playgrounds.
-      humanURL: https://github.com/naftiko/anthropic-sandbox/blob/main/openapi/anthropic-prompt-tools-api-openapi.yml
-      baseURL: http://localhost:8080/rest/anthropic-prompt-tools-api/1.0.0   
-      image: https://naftiko.github.io/docs/images/monogram/monogram_full_color_512.png        
+      humanURL: https://github.com/naftiko/anthropic-sandbox
+      baseURL: http://localhost:8080/rest/anthropic-sandbox/1.0.0
+      image: https://naftiko.github.io/docs/images/monogram/monogram_full_color_512.png
       tags:
         - Prompt Engineering
         - Prompt Generation
